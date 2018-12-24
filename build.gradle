@@ -20,7 +20,7 @@ apply plugin: 'io.spring.dependency-management'
 
 task buildUi(type: Exec) {
     workingDir './dev-flow-sample-ui'
-    commandLine  'npm', 'run', 'build'
+    commandLine  'npm', 'install','run', 'build'
 }
 
 task copyUi(type:Copy) {
@@ -49,6 +49,10 @@ task unzip(type: Copy) {
 task decomposeLayers() {
     dependsOn 'build'
     dependsOn 'unzip'
+}
+task buildDockerImage(type:Exec) {
+    dependsOn 'decomposeLayers'
+    commandLine 'docker','build', '-t', 'vitech-team/pet_project', '.'
 }
 
 bootJar {
