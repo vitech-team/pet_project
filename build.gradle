@@ -10,11 +10,32 @@ buildscript {
     }
 }
 
+
 apply plugin: 'java'
 apply plugin: 'eclipse'
 apply plugin: 'idea'
 apply plugin: 'org.springframework.boot'
 apply plugin: 'io.spring.dependency-management'
+
+
+task buildUi(type: Exec) {
+    workingDir './dev-flow-sample-ui'
+    commandLine  'npm', 'run', 'build'
+}
+
+task copyUi(type:Copy) {
+    dependsOn 'buildUi'
+    from './dev-flow-sample-ui/build'
+    into './dev-flow-sample-web/src/main/resources/static'
+    include '**.html'
+    include '**.js'
+    include '**.json'
+    include '**.ico'
+    include 'static/**'
+}
+
+
+compileJava.dependsOn 'copyUi'
 
 bootJar {
     baseName = 'dev-flow-sample'

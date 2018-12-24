@@ -1,2 +1,7 @@
 /.idea
 /.gradle
+/build
+/out
+/**/build
+/**/out
+/dev-flow-sample-web/src/main/resources/static
