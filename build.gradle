@@ -17,10 +17,15 @@ apply plugin: 'idea'
 apply plugin: 'org.springframework.boot'
 apply plugin: 'io.spring.dependency-management'
 
+task installUiDependencies(type:Exec) {
+    workingDir './dev-flow-sample-ui'
+    commandLine 'npm', 'install'
+}
 
 task buildUi(type: Exec) {
+    dependsOn 'installUiDependencies'
     workingDir './dev-flow-sample-ui'
-    commandLine  'npm', 'install', 'run', 'build'
+    commandLine  'npm', 'run', 'build'
 }
 
 task copyUi(type:Copy) {
