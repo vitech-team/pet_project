@@ -20,7 +20,7 @@ apply plugin: 'io.spring.dependency-management'
 
 task buildUi(type: Exec) {
     workingDir './dev-flow-sample-ui'
-    commandLine  'npm', 'install','run', 'build'
+    commandLine  'npm', 'install', 'run', 'build'
 }
 
 task copyUi(type:Copy) {
