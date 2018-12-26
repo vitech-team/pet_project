@@ -1,0 +1,20 @@
+spring:
+  security:
+    oauth2:
+      client:
+        registration:
+          cognito-client-1:
+            client-id: 6chfuia5jnfq4026b66sgf8ogl
+            client-secret: so27fk7jqs3ja6dh2k028nrqaq7nodjq71h3mr20grjrbabeurp
+            client-name: Pet-proj-app
+            provider: cognito
+            scope: openid
+            redirect-uri-template: http://localhost:8080/login/oauth2/code/cognito
+            authorization-grant-type: authorization_code
+        provider:
+          cognito:
+            authorization-uri: https://petproject.auth.us-east-2.amazoncognito.com/oauth2/authorize
+            token-uri: https://petproject.auth.us-east-2.amazoncognito.com/oauth2/token
+            user-info-uri: https://petproject.auth.us-east-2.amazoncognito.com/oauth2/userInfo
+            jwk-set-uri: https://cognito-idp.us-east-2.amazonaws.com/us-east-2_2H7fohttK/.well-known/jwks.json
+            user-name-attribute: cognito:username
