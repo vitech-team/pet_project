@@ -1,11 +1,28 @@
 language: java
-jdk: oraclejdk11
+jdk: oraclejdk8
 
 
 before_script:
-  - chmod +x ./gradlew
+- chmod +x ./gradlew
 
 build:
 
+  pre_ci_boot:
+    image_name: vitechpetproject/ci
+    image_tag: 0.1.4
+    pull: true
+
   ci:
-  - ./gradlew clean build
+  - ./gradlew clean build jacocoRootReport sonarqube buildDockerImage -Dsonar.branch.name=$BRANCH
+
+  always:
+  - cp -r ./**/build/test-results/test/* shippable/testresults
+  - cp -r ./build/target shippable/codecoverage
+  - cp -r ./dev-flow-sample-ui/coverage/cobertura-coverage.xml shippable/codecoverage
+  - cp -r ./dev-flow-sample-ui/coverage/junit.xml shippable/testresults
+
+
+integrations:
+  hub:
+  - integrationName: DockerHub
+    type: dockerRegistryLogin

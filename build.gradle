@@ -1,6 +1,3 @@
-group 'ua.com.vitech.internal'
-version '1.0-SNAPSHOT'
-
 buildscript {
     repositories {
         mavenCentral()
@@ -10,17 +7,77 @@ buildscript {
     }
 }
 
+plugins {
+    id "org.sonarqube" version "2.6"
+}
+
+sonarqube {
+    properties {
+        property "sonar.projectKey", "pet_proj"
+        property "sonar.organization", "petproject"
+        property "sonar.host.url", "https://sonarcloud.io"
+        property "sonar.login", "b126a21d30d531bd01ad44b67f01264ee93546ae"
+    }
+}
+
+group 'ua.com.vitech.internal'
+version '1.0-SNAPSHOT'
 
 apply plugin: 'java'
 apply plugin: 'eclipse'
 apply plugin: 'idea'
 apply plugin: 'org.springframework.boot'
 apply plugin: 'io.spring.dependency-management'
+apply plugin: 'jacoco'
 
+allprojects {
+    apply plugin: 'java'
+    apply plugin: 'jacoco'
+
+    repositories {
+        jcenter()
+    }
+
+    jacoco {
+        toolVersion = '0.8.2'
+    }
+}
+
+subprojects {
+    jacocoTestReport {
+        additionalSourceDirs = files(sourceSets.main.allSource.srcDirs)
+        sourceDirectories = files(sourceSets.main.allSource.srcDirs)
+        classDirectories =  files(sourceSets.main.output)
+    }
+}
+
+task jacocoRootReport(type: org.gradle.testing.jacoco.tasks.JacocoReport) {
+
+    dependsOn = subprojects.test
+    additionalSourceDirs = files(subprojects.sourceSets.main.allSource.srcDirs)
+    sourceDirectories = files(subprojects.sourceSets.main.allSource.srcDirs)
+    classDirectories =  files(subprojects.sourceSets.main.output)
+    executionData = files(subprojects.jacocoTestReport.executionData)
+
+    reports {
+        html.enabled true
+        xml.enabled true
+        xml.destination file("${buildDir}/target/site/jacoco/jacoco.xml")
+        csv.enabled true
+        csv.destination file("${buildDir}/target/site/jacoco/jacoco.csv")
+    }
+
+}
+
+task installUiDependencies(type:Exec) {
+    workingDir './dev-flow-sample-ui'
+    commandLine 'npm', 'install'
+}
 
 task buildUi(type: Exec) {
+    dependsOn 'installUiDependencies'
     workingDir './dev-flow-sample-ui'
-    commandLine  'npm', 'install', 'run', 'build'
+    commandLine  'npm', 'run', 'build'
 }
 
 task copyUi(type:Copy) {
@@ -36,6 +93,26 @@ task copyUi(type:Copy) {
 
 
 compileJava.dependsOn 'copyUi'
+
+task unzip(type: Copy) {
+    def zipFile = file('build/libs/dev-flow-sample-0.1.0.jar')
+    def outputDir = file("${buildDir}/libs/dependency")
+
+    from zipTree(zipFile)
+    into outputDir
+}
+
+
+task decomposeLayers() {
+    dependsOn 'build'
+    dependsOn 'unzip'
+}
+
+task buildDockerImage(type:Exec) {
+    dependsOn 'decomposeLayers'
+    commandLine 'docker','build', '-t', 'vitech-team/pet_project:ci', '.'
+}
+
 
 bootJar {
     baseName = 'dev-flow-sample'
@@ -57,6 +134,18 @@ dependencies {
     compile project(':dev-flow-sample-core')
     compile project(':dev-flow-sample-web')
 
-    testCompile group: 'junit', name: 'junit', version: '4.12'
+    testCompile 'junit:junit:4.12'
     testCompile('org.springframework.boot:spring-boot-starter-test')
+}
+
+subprojects {
+
+    apply plugin: 'java'
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+            compile('org.projectlombok:lombok:1.16.18')
+            annotationProcessor('org.projectlombok:lombok:1.16.18')
+    }
 }
