@@ -1,5 +1,5 @@
 language: java
-jdk: oraclejdk11
+jdk: oraclejdk8
 
 
 before_script:
@@ -7,5 +7,16 @@ before_script:
 
 build:
 
+  pre_ci_boot:
+    image_name: vitechpetproject/ci
+    image_tag: 0.1.4
+    pull: true
+
   ci:
-  - ./gradlew clean build
+  - ./gradlew clean build jacocoRootReport
+
+  always:
+  - cp -r ./**/build/test-results/test/* shippable/testresults
+  - cp -r ./build/target shippable/codecoverage
+
+
