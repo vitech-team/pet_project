@@ -17,8 +17,13 @@ apply plugin: 'idea'
 apply plugin: 'org.springframework.boot'
 apply plugin: 'io.spring.dependency-management'
 
+task installUiDependencies(type:Exec) {
+    workingDir './dev-flow-sample-ui'
+    commandLine 'npm', 'install'
+}
 
 task buildUi(type: Exec) {
+    dependsOn 'installUiDependencies'
     workingDir './dev-flow-sample-ui'
     commandLine  'npm', 'run', 'build'
 }
@@ -36,6 +41,24 @@ task copyUi(type:Copy) {
 
 
 compileJava.dependsOn 'copyUi'
+
+task unzip(type: Copy) {
+    def zipFile = file('build/libs/dev-flow-sample-0.1.0.jar')
+    def outputDir = file("${buildDir}/libs/dependency")
+
+    from zipTree(zipFile)
+    into outputDir
+}
+
+
+task decomposeLayers() {
+    dependsOn 'build'
+    dependsOn 'unzip'
+}
+task buildDockerImage(type:Exec) {
+    dependsOn 'decomposeLayers'
+    commandLine 'docker','build', '-t', 'vitech-team/pet_project', '.'
+}
 
 bootJar {
     baseName = 'dev-flow-sample'
