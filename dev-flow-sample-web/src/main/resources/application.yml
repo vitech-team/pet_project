@@ -5,7 +5,6 @@ spring:
         registration:
           cognito-client-1:
             client-id: 6chfuia5jnfq4026b66sgf8ogl
-            client-secret: so27fk7jqs3ja6dh2k028nrqaq7nodjq71h3mr20grjrbabeurp
             client-name: Pet-proj-app
             provider: cognito
             scope: openid
