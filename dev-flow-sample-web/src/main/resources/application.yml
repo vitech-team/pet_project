@@ -4,8 +4,8 @@ spring:
       client:
         registration:
           cognito-client-1:
-            client-id: 6chfuia5jnfq4026b66sgf8ogl
-            client-name: Pet-proj-app
+            client-id: ou8fts6n4aqngvjkr0uo75ugl
+            client-name: Pet-proj
             provider: cognito
             scope: openid
             redirect-uri-template: http://localhost:8080/login/oauth2/code/cognito
