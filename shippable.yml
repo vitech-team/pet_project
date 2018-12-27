@@ -13,7 +13,7 @@ build:
     pull: true
 
   ci:
-  - ./gradlew clean build jacocoRootReport
+  - ./gradlew clean build jacocoRootReport sonarqube
 
   always:
   - cp -r ./**/build/test-results/test/* shippable/testresults
