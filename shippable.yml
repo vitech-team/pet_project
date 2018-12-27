@@ -13,7 +13,7 @@ build:
     pull: true
 
   ci:
-  - ./gradlew clean build jacocoRootReport sonarqube
+  - ./gradlew clean build jacocoRootReport sonarqube -Dsonar.branch.name=$BRANCH
 
   always:
   - cp -r ./**/build/test-results/test/* shippable/testresults
