@@ -97,7 +97,7 @@ task decomposeLayers() {
 }
 task buildDockerImage(type:Exec) {
     dependsOn 'decomposeLayers'
-    commandLine 'docker','build', '-t', 'vitech-team/pet_project', '.'
+    commandLine 'docker','build', '-t', 'vitech-team/pet_project:ci', '.'
 }
 
 bootJar {
