@@ -1,21 +1,18 @@
 package ua.com.vitech.internal.sample.devflow.web;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpRequest;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import ua.com.vitech.internal.sample.devflow.core.domain.User;
-import ua.com.vitech.internal.sample.devflow.core.repositories.UserRepository;
 import ua.com.vitech.internal.sample.devflow.core.services.UserService;
 
-import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.security.Principal;
 import java.util.Date;
-import java.util.List;
+
 
 @RestController
+@CrossOrigin(origins = "http://localhost:3000")
 public class GreetingController {
 
     @Autowired
@@ -37,12 +34,11 @@ public class GreetingController {
     }
 
     @RequestMapping("/user")
-    public User getUsers(Principal principal, HttpRequest httpRequest){
-        System.out.println(httpRequest);
+    public User getUsers(Principal principal){
         User user = new User();
         user.setUsername(principal.getName());
         user.setDateOfVisit(new Date());
-        user.setRequestUrl("request url");
+        user.setRequestUrl("/user");
         return userService.logUser(user);
     }
 }

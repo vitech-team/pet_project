@@ -1,5 +1,6 @@
 package ua.com.vitech.internal.sample.devflow.core.services.impl;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ua.com.vitech.internal.sample.devflow.core.domain.User;
@@ -19,7 +20,8 @@ public class UserServiceImpl implements UserService {
     public User logUser(User user) {
        User lastUserRequest = userRepository.findByUsername(user.getUsername())
                .orElseGet(User::new);
-        userRepository.save(user);
+        BeanUtils.copyProperties(user, lastUserRequest, "id");
+        userRepository.save(lastUserRequest);
         return lastUserRequest;
     }
 
