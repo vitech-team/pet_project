@@ -59,6 +59,14 @@ task jacocoRootReport(type: org.gradle.testing.jacoco.tasks.JacocoReport) {
     classDirectories =  files(subprojects.sourceSets.main.output)
     executionData = files(subprojects.jacocoTestReport.executionData)
 
+    afterEvaluate {
+        classDirectories = files(classDirectories.files.collect {
+            fileTree(dir: it, exclude: [
+                    '**/*SecurityConfig*'
+            ])
+        })
+    }
+
     reports {
         html.enabled true
         xml.enabled true
@@ -66,7 +74,6 @@ task jacocoRootReport(type: org.gradle.testing.jacoco.tasks.JacocoReport) {
         csv.enabled true
         csv.destination file("${buildDir}/target/site/jacoco/jacoco.csv")
     }
-
 }
 
 task installUiDependencies(type:Exec) {
