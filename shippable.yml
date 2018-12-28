@@ -13,10 +13,13 @@ build:
     pull: true
 
   ci:
-  - ./gradlew clean build jacocoRootReport sonarqube
+  - ./gradlew clean build jacocoRootReport sonarqube buildDockerImage -Dsonar.branch.name=$BRANCH
 
   always:
   - cp -r ./**/build/test-results/test/* shippable/testresults
   - cp -r ./build/target shippable/codecoverage
 
-
+integrations:
+  hub:
+  - integrationName: DockerHub
+    type: dockerRegistryLogin
