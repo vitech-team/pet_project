@@ -13,11 +13,7 @@ build:
     pull: true
 
   ci:
-  - ./gradlew clean build jacocoRootReport buildDockerImage
-
-  post_ci:
-  - docker tag vitech-team/pet_project:ci vitechpetproject/pet_project:$COMMIT
-  - docker push vitechpetproject/pet_project:$COMMIT
+  - ./gradlew clean build jacocoRootReport sonarqube buildDockerImage -Dsonar.branch.name=$BRANCH
 
   always:
   - cp -r ./**/build/test-results/test/* shippable/testresults

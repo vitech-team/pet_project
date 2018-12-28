@@ -1,6 +1,3 @@
-group 'ua.com.vitech.internal'
-version '1.0-SNAPSHOT'
-
 buildscript {
     repositories {
         mavenCentral()
@@ -10,6 +7,21 @@ buildscript {
     }
 }
 
+plugins {
+    id "org.sonarqube" version "2.6"
+}
+
+sonarqube {
+    properties {
+        property "sonar.projectKey", "pet_proj"
+        property "sonar.organization", "petproject"
+        property "sonar.host.url", "https://sonarcloud.io"
+        property "sonar.login", "b126a21d30d531bd01ad44b67f01264ee93546ae"
+    }
+}
+
+group 'ua.com.vitech.internal'
+version '1.0-SNAPSHOT'
 
 apply plugin: 'java'
 apply plugin: 'eclipse'
@@ -27,7 +39,7 @@ allprojects {
     }
 
     jacoco {
-        toolVersion = '0.7.1.201405082137'
+        toolVersion = '0.8.2'
     }
 }
 
