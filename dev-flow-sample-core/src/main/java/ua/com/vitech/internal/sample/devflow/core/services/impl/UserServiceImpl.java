@@ -18,15 +18,11 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User logUser(User user) {
-       User lastUserRequest = userRepository.findByUsername(user.getUsername())
+       User lastUserRequest = userRepository
+               .findByUsername(user.getUsername())
                .orElseGet(User::new);
         BeanUtils.copyProperties(user, lastUserRequest, "id");
         userRepository.save(lastUserRequest);
         return lastUserRequest;
-    }
-
-    @Override
-    public User getByUserName(String userName) {
-        return userRepository.findByUsername(userName).get();
     }
 }

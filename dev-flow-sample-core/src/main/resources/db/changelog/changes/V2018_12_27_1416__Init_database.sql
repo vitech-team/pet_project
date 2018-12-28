@@ -9,3 +9,4 @@ create table dev_flow_sample_user
   request_url   varchar(255),
   username      varchar(255)
 );
+

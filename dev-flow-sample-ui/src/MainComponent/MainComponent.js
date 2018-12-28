@@ -9,7 +9,7 @@ export class MainComponent extends Component{
         this.state = {
             user: {
             username: '',
-            dateOfVisit: '2018-12-28T09:03:56.699+0000',
+            dateOfVisit: '',
             requestUrl: '',
             }
         }
@@ -20,7 +20,6 @@ export class MainComponent extends Component{
         const user = result.data;
         user.dateOfVisit = new Date(user.dateOfVisit).toDateString();
         this.setState({user});
-        // console.log(new Date(this.state.user.dateOfVisit).toDateString());
     }
 
 

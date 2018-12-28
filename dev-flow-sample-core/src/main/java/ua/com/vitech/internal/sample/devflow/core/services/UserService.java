@@ -6,5 +6,4 @@ public interface UserService {
 
     User logUser(User user);
 
-    User getByUserName(String userName);
 }
