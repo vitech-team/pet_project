@@ -102,7 +102,6 @@ task unzip(type: Copy) {
     into outputDir
 }
 
-
 task decomposeLayers() {
     dependsOn 'build'
     dependsOn 'unzip'
@@ -112,7 +111,6 @@ task buildDockerImage(type:Exec) {
     dependsOn 'decomposeLayers'
     commandLine 'docker','build', '-t', 'vitech-team/pet_project:ci', '.'
 }
-
 
 bootJar {
     baseName = 'dev-flow-sample'
