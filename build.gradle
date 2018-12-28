@@ -58,6 +58,15 @@ task jacocoRootReport(type: org.gradle.testing.jacoco.tasks.JacocoReport) {
     sourceDirectories = files(subprojects.sourceSets.main.allSource.srcDirs)
     classDirectories =  files(subprojects.sourceSets.main.output)
     executionData = files(subprojects.jacocoTestReport.executionData)
+    afterEvaluate {
+        classDirectories = files(classDirectories.files.collect {
+            fileTree(dir: it, exclude:
+                    [
+                            '**/it/**',
+                            '**/config/**'
+                    ])
+        })
+    }
 
     reports {
         html.enabled true
@@ -135,6 +144,7 @@ dependencies {
     testCompile 'junit:junit:4.12'
     testCompile('org.springframework.boot:spring-boot-starter-test')
 }
+
 
 subprojects {
 
