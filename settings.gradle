@@ -1,4 +1,5 @@
 rootProject.name = 'dev-flow-sample'
 include 'dev-flow-sample-core'
 include 'dev-flow-sample-web'
+include 'it'
 

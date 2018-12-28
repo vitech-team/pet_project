@@ -3,7 +3,7 @@ jdk: oraclejdk8
 
 
 before_script:
-  - chmod +x ./gradlew
+- chmod +x ./gradlew
 
 build:
 
@@ -18,6 +18,9 @@ build:
   always:
   - cp -r ./**/build/test-results/test/* shippable/testresults
   - cp -r ./build/target shippable/codecoverage
+  - cp -r ./dev-flow-sample-ui/coverage/cobertura-coverage.xml shippable/codecoverage
+  - cp -r ./dev-flow-sample-ui/coverage/junit.xml shippable/testresults
+
 
 integrations:
   hub:
