@@ -20,6 +20,10 @@ public class LoginController {
 
     @RequestMapping("/login")
     public void login(HttpServletResponse httpServletResponse) throws IOException {
+        try {
+            throw new Exception();
+        } catch (Exception e) {
+        }
         httpServletResponse.sendRedirect(loginRedirectUrl);
     }
 
