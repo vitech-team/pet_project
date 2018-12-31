@@ -12,11 +12,8 @@ import java.util.Date;
 
 
 @RestController
-@CrossOrigin(origins = "http://localhost:3000")
 public class GreetingController {
 
-    @Autowired
-    UserService userService;
 
     @RequestMapping("/greeting")
     public String greeting(Principal principal) {
@@ -33,12 +30,4 @@ public class GreetingController {
         httpServletResponse.sendRedirect("/oauth2/authorization/cognito-client-1");
     }
 
-    @RequestMapping("/user")
-    public User getUsers(Principal principal){
-        User user = new User();
-        user.setUsername(principal.getName());
-        user.setDateOfVisit(new Date());
-        user.setRequestUrl("/user");
-        return userService.logUser(user);
-    }
 }
