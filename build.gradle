@@ -62,6 +62,7 @@ task jacocoRootReport(type: org.gradle.testing.jacoco.tasks.JacocoReport) {
         classDirectories = files(classDirectories.files.collect {
             fileTree(dir: it, exclude:
                     [
+                            'ua/com/vitech/internal/sample/devflow/core/domain/**',
                             '**/it/**',
                             '**/config/**'
                     ])
