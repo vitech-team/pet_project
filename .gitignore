@@ -5,3 +5,4 @@
 /**/build
 /**/out
 /dev-flow-sample-web/src/main/resources/static
+/dev-flow-sample-ui/package-lock.json
