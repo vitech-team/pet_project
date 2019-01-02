@@ -34,7 +34,7 @@ task integrationTest(type: Test) {
 }
 
 dependencies {
-    testCompile 'junit:junit:4.12'
-    integrationTestCompile 'com.squareup.retrofit2:retrofit:2.5.0'
-    integrationTestCompile 'com.squareup.retrofit2:converter-scalars:2.5.0'
+    testCompile("junit:junit:$junitVersion")
+    integrationTestCompile("com.squareup.retrofit2:retrofit:$retrofit2Version")
+    integrationTestCompile("com.squareup.retrofit2:converter-scalars:$retrofit2Version")
 }

@@ -3,20 +3,8 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath("org.springframework.boot:spring-boot-gradle-plugin:2.0.5.RELEASE")
-    }
-}
-
-plugins {
-    id "org.sonarqube" version "2.6"
-}
-
-sonarqube {
-    properties {
-        property "sonar.projectKey", "pet_proj"
-        property "sonar.organization", "petproject"
-        property "sonar.host.url", "https://sonarcloud.io"
-        property "sonar.login", "b126a21d30d531bd01ad44b67f01264ee93546ae"
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:$gradlePluginVersion")
+        classpath("org.sonarsource.scanner.gradle:sonarqube-gradle-plugin:$sonarqubeVersion")
     }
 }
 
@@ -29,6 +17,16 @@ apply plugin: 'idea'
 apply plugin: 'org.springframework.boot'
 apply plugin: 'io.spring.dependency-management'
 apply plugin: 'jacoco'
+apply plugin: "org.sonarqube"
+
+sonarqube {
+    properties {
+        property "sonar.projectKey", "pet_proj"
+        property "sonar.organization", "petproject"
+        property "sonar.host.url", "https://sonarcloud.io"
+        property "sonar.login", "b126a21d30d531bd01ad44b67f01264ee93546ae"
+    }
+}
 
 allprojects {
     apply plugin: 'java'
@@ -39,7 +37,7 @@ allprojects {
     }
 
     jacoco {
-        toolVersion = '0.8.2'
+        toolVersion = "$jacocoToolVersion"
     }
 }
 
@@ -137,12 +135,12 @@ springBoot {
     mainClassName = "ua.com.vitech.internal.sample.devflow.Application"
 }
 dependencies {
-    compile("org.springframework.boot:spring-boot-starter-web")
+    compile("org.springframework.boot:spring-boot-starter-web:$springBootStarterVersion")
     compile project(':dev-flow-sample-core')
     compile project(':dev-flow-sample-web')
 
-    testCompile 'junit:junit:4.12'
-    testCompile('org.springframework.boot:spring-boot-starter-test')
+    testCompile("junit:junit:$junitVersion")
+    testCompile("org.springframework.boot:spring-boot-starter-test:$springBootStarterVersion")
 }
 
 
@@ -153,7 +151,8 @@ subprojects {
         mavenCentral()
     }
     dependencies {
-            compile('org.projectlombok:lombok:1.16.18')
-            annotationProcessor('org.projectlombok:lombok:1.16.18')
+        compile("org.projectlombok:lombok:$lombokVersion")
+        annotationProcessor("org.projectlombok:lombok:$lombokVersion")
+        testCompile("junit:junit:$junitVersion")
     }
 }
