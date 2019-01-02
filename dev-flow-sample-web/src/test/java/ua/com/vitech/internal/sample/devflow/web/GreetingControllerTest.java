@@ -17,4 +17,9 @@ public class GreetingControllerTest {
         }));
     }
 
+    @Test
+    public void testPublic() {
+        Assert.assertEquals("public page", new GreetingController().publicPage());
+    }
+
 }
