@@ -26,3 +26,9 @@ integrations:
   hub:
   - integrationName: DockerHub
     type: dockerRegistryLogin
+
+  notifications:
+  - integrationName: Slack   
+    type: slack
+    recipients:
+      - "#elligo-tech-space"
