@@ -44,6 +44,10 @@ resources:
   - name: aws_keys
     type: integration
     integration: "aws"
+# Cognito integration needed for OAuth
+  - name: cognito
+    type: integration
+    integration: "Cognito"
 # State resource to store Terraform State
   - name: aws_ecs_tf_state
     type: state
@@ -78,6 +82,7 @@ jobs:
           script:
             - export AWS_ACCESS_KEY=$(shipctl get_integration_resource_field aws_keys "accessKey")
             - export AWS_SECRET_KEY=$(shipctl get_integration_resource_field aws_keys "secretKey")
+            - export COGNITO_SECRET=$(shipctl get_integration_resource_field cognito "cognitoSecret")
             - pushd $(shipctl get_resource_state "pet_project_terraform")
             - shipctl replace terraform.tfvars
             - shipctl copy_file_from_resource_state aws_ecs_tf_state terraform.tfstate .
