@@ -21,8 +21,6 @@ public class LoginController {
     @RequestMapping("/login")
     public void login(HttpServletResponse httpServletResponse) throws IOException {
         httpServletResponse.sendRedirect(loginRedirectUrl);
-        int i;
-        i=+1;
     }
 
 }
