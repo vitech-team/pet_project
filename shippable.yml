@@ -13,6 +13,7 @@ build:
     pull: true
 
   ci:
+  - echo $BRANCH
   - env
   - ./gradlew clean build jacocoRootReport sonarqube buildDockerImage -Dsonar.pullrequest.base=$BASE_BRANCH  -Dsonar.pullrequest.branch=$BRANCH -Dsonar.pullrequest.key=$TRAVIS_PULL_REQUEST
 
