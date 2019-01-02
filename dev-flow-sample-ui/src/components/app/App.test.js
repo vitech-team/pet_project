@@ -10,6 +10,8 @@ configure({adapter: new Adapter()});
 
 describe('test', () => {
     test('app component test should run succesfully', () => {
+        let component = new App();
+        expect(component.render()).toEqual(component.element);
     })
 
 });
