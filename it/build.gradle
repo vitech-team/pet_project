@@ -1,0 +1,40 @@
+plugins {
+    id 'java'
+}
+
+group 'ua.com.vitech.internal'
+version '1.0-SNAPSHOT'
+
+sourceCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+}
+
+sourceSets {
+    integrationTest {
+        java {
+            compileClasspath += main.output + test.output
+            runtimeClasspath += main.output + test.output
+            srcDir file('src/integration-test/java')
+        }
+        resources.srcDir file('src/integration-test/resources')
+    }
+}
+
+configurations {
+    integrationTestCompile.extendsFrom testCompile
+    integrationTestRuntime.extendsFrom testRuntime
+}
+
+task integrationTest(type: Test) {
+    testClassesDirs = sourceSets.integrationTest.output.classesDirs
+    classpath = sourceSets.integrationTest.runtimeClasspath
+    outputs.upToDateWhen { false }
+}
+
+dependencies {
+    testCompile("junit:junit:$junitVersion")
+    integrationTestCompile("com.squareup.retrofit2:retrofit:$retrofit2Version")
+    integrationTestCompile("com.squareup.retrofit2:converter-scalars:$retrofit2Version")
+}
