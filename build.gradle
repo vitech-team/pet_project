@@ -135,12 +135,12 @@ springBoot {
     mainClassName = "ua.com.vitech.internal.sample.devflow.Application"
 }
 dependencies {
-    compile("org.springframework.boot:spring-boot-starter-web")
+    compile("org.springframework.boot:spring-boot-starter-web:$springBootStarterVersion")
     compile project(':dev-flow-sample-core')
     compile project(':dev-flow-sample-web')
 
-    testCompile "junit:junit:$junitVersion"
-    testCompile('org.springframework.boot:spring-boot-starter-test')
+    testCompile("junit:junit:$junitVersion")
+    testCompile("org.springframework.boot:spring-boot-starter-test:$springBootStarterVersion")
 }
 
 
@@ -151,8 +151,8 @@ subprojects {
         mavenCentral()
     }
     dependencies {
-            testCompile "junit:junit:$junitVersion"
-            compile("org.projectlombok:lombok:$lombokVersion")
-            annotationProcessor("org.projectlombok:lombok:$lombokVersion")
+        compile("org.projectlombok:lombok:$lombokVersion")
+        annotationProcessor("org.projectlombok:lombok:$lombokVersion")
+        testCompile("junit:junit:$junitVersion")
     }
 }

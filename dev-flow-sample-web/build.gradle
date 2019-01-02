@@ -13,7 +13,7 @@ repositories {
 
 dependencies {
     compile("org.springframework:spring-web:$springWebVersion")
-    compile("org.springframework.boot:spring-boot-starter-security:$springBootStarterSecurityVersion")
+    compile("org.springframework.boot:spring-boot-starter-security:$springBootStarterVersion")
     compile("javax.servlet:javax.servlet-api:$servletApiVersion")
     compile("org.springframework.security:spring-security-oauth2-client:$springSecurityOauthVersion")
     compile("org.springframework.security:spring-security-oauth2-jose:$springSecurityOauthVersion")
