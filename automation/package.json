@@ -1,0 +1,20 @@
+{
+  "name": "automation",
+  "version": "1.0.0",
+  "description": "",
+  "main": "test.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "s-test": "mocha $(find test -name '*.js') --timeout 10000 test"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "chromedriver": "^2.45.0",
+    "geckodriver": "^1.14.1",
+    "selenium-webdriver": "^4.0.0-alpha.1"
+  },
+  "devDependencies": {
+    "mocha": "^5.2.0"
+  }
+}
