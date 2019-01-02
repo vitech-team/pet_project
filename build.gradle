@@ -21,10 +21,10 @@ apply plugin: "org.sonarqube"
 
 sonarqube {
     properties {
-        property "sonar.projectKey", "pet_proj"
-        property "sonar.organization", "petproject"
-        property "sonar.host.url", "https://sonarcloud.io"
-        property "sonar.login", "b126a21d30d531bd01ad44b67f01264ee93546ae"
+        property "sonar.projectKey", "$sonarProjectKey"
+        property "sonar.organization", "$sonarOrganization"
+        property "sonar.host.url", "$sonarHostUrl"
+        property "sonar.login", "$sonarLogin"
     }
 }
 
@@ -125,6 +125,27 @@ task buildDockerImage(type:Exec) {
     dependsOn 'decomposeLayers'
     commandLine 'docker','build', '-t', 'vitech-team/pet_project:ci', '.'
 }
+
+task sonarqubeResult {
+    doLast {
+        def sonarAuthToken = "$sonarLogin"
+        println sonarAuthToken
+        def projectKey = "$sonarProjectKey"
+        println projectKey
+        def sonarurl = "$sonarHostUrl" + '/api/qualitygates/project_status?projectKey='+projectKey
+        println sonarurl
+        sleep(2 * 1000)
+        def basicAuth = (sonarAuthToken + ":").bytes.encodeBase64().toString()
+        def json = sonarurl.toURL().getText(requestProperties: [Authorization: 'Basic ' + basicAuth])
+        def parsed = new groovy.json.JsonSlurper().parseText(json)
+        
+        if(parsed['projectStatus']['status'] != 'OK'){
+            throw new GradleException("sonar quality gateway is failing!")
+        }
+    }
+}
+
+tasks.sonarqubeResult.dependsOn('sonarqube')
 
 bootJar {
     baseName = 'dev-flow-sample'
