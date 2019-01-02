@@ -126,25 +126,25 @@ task buildDockerImage(type:Exec) {
     commandLine 'docker','build', '-t', 'vitech-team/pet_project:ci', '.'
 }
 
-task sonarqubeResult {
-    doLast {
-        def sonarAuthToken = "$sonarLogin"
-        println sonarAuthToken
-        def projectKey = "$sonarProjectKey"
-        println projectKey
-        def sonarurl = "$sonarHostUrl" + '/api/qualitygates/project_status?projectKey='+projectKey
-        println sonarurl
-        sleep(2 * 1000)
-        def basicAuth = (sonarAuthToken + ":").bytes.encodeBase64().toString()
-        def json = sonarurl.toURL().getText(requestProperties: [Authorization: 'Basic ' + basicAuth])
-        println json
-        def parsed = new groovy.json.JsonSlurper().parseText(json)
-        println parsed
-        if(parsed['projectStatus']['status'] != 'OK'){
-            throw new GradleException("sonar quality gateway is failing!")
-        }
-    }
-}
+//task sonarqubeResult {
+//    doLast {
+//        def sonarAuthToken = "$sonarLogin"
+//        println sonarAuthToken
+//        def projectKey = "$sonarProjectKey"
+//        println projectKey
+//        def sonarurl = "$sonarHostUrl" + '/api/qualitygates/project_status?projectKey='+projectKey
+//        println sonarurl
+//        sleep(2 * 1000)
+//        def basicAuth = (sonarAuthToken + ":").bytes.encodeBase64().toString()
+//        def json = sonarurl.toURL().getText(requestProperties: [Authorization: 'Basic ' + basicAuth])
+//        println json
+//        def parsed = new groovy.json.JsonSlurper().parseText(json)
+//        println parsed
+//        if(parsed['projectStatus']['status'] != 'OK'){
+//            throw new GradleException("sonar quality gateway is failing!")
+//        }
+//    }
+//}
 
 tasks.sonarqubeResult.dependsOn('sonarqube')
 
