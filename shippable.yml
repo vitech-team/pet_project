@@ -39,8 +39,11 @@ integrations:
     type: slack
     recipients:
       - "#elligo-tech-space"
-    on_success: never
+    branches:
+        only:
+          - master
+    on_success: always
     on_failure: never
     on_cancel: never
     on_start: never
-    on_pull_request: always
+    on_pull_request: never
