@@ -126,8 +126,6 @@ task buildDockerImage(type:Exec) {
     commandLine 'docker','build', '-t', 'vitech-team/pet_project:ci', '.'
 }
 
-tasks.sonarqubeResult.dependsOn('sonarqube')
-
 bootJar {
     baseName = 'dev-flow-sample'
     version =  '0.1.0'
