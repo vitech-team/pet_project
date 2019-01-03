@@ -5,7 +5,7 @@
   "main": "test.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "s-test": "mocha $(find test -name '*.js') --timeout 10000 test"
+    "s-test": "mocha $(find test -name '*.js') --timeout 100000 test"
   },
   "author": "",
   "license": "ISC",
