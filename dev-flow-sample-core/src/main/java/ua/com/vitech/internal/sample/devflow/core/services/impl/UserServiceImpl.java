@@ -7,8 +7,6 @@ import ua.com.vitech.internal.sample.devflow.core.domain.User;
 import ua.com.vitech.internal.sample.devflow.core.repositories.UserRepository;
 import ua.com.vitech.internal.sample.devflow.core.services.UserService;
 
-import java.util.Optional;
-
 @Service
 public class UserServiceImpl implements UserService {
 
