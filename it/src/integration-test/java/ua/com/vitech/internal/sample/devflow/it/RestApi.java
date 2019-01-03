@@ -5,7 +5,7 @@ import retrofit2.http.GET;
 
 public interface RestApi {
 
-    @GET("public")
-    Call<String> publicUrl();
+  @GET("public")
+  Call<String> publicUrl();
 
 }

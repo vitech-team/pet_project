@@ -18,7 +18,15 @@ apply plugin: 'org.springframework.boot'
 apply plugin: 'io.spring.dependency-management'
 apply plugin: 'jacoco'
 apply plugin: "org.sonarqube"
+apply plugin: "checkstyle"
 
+checkstyle {
+    toolVersion = "$checkstyleVersion"
+    config = rootProject.resources.text.fromFile('config/checkstyle/google_checks.xml')
+    checkstyleMain.source = './'
+    checkstyleMain.include '**/*.java'
+    checkstyleMain.exclude('**/node_modules/**')
+}
 sonarqube {
     properties {
         property "sonar.projectKey", "pet_proj"
@@ -45,7 +53,7 @@ subprojects {
     jacocoTestReport {
         additionalSourceDirs = files(sourceSets.main.allSource.srcDirs)
         sourceDirectories = files(sourceSets.main.allSource.srcDirs)
-        classDirectories =  files(sourceSets.main.output)
+        classDirectories = files(sourceSets.main.output)
     }
 }
 
@@ -54,7 +62,7 @@ task jacocoRootReport(type: org.gradle.testing.jacoco.tasks.JacocoReport) {
     dependsOn = subprojects.test
     additionalSourceDirs = files(subprojects.sourceSets.main.allSource.srcDirs)
     sourceDirectories = files(subprojects.sourceSets.main.allSource.srcDirs)
-    classDirectories =  files(subprojects.sourceSets.main.output)
+    classDirectories = files(subprojects.sourceSets.main.output)
     executionData = files(subprojects.jacocoTestReport.executionData)
     afterEvaluate {
         classDirectories = files(classDirectories.files.collect {
@@ -83,7 +91,7 @@ task jacocoRootReport(type: org.gradle.testing.jacoco.tasks.JacocoReport) {
     }
 }
 
-task installUiDependencies(type:Exec) {
+task installUiDependencies(type: Exec) {
     workingDir './dev-flow-sample-ui'
     commandLine 'npm', 'install'
 }
@@ -91,10 +99,10 @@ task installUiDependencies(type:Exec) {
 task buildUi(type: Exec) {
     dependsOn 'installUiDependencies'
     workingDir './dev-flow-sample-ui'
-    commandLine  'npm', 'run', 'build'
+    commandLine 'npm', 'run', 'build'
 }
 
-task copyUi(type:Copy) {
+task copyUi(type: Copy) {
     dependsOn 'buildUi'
     from './dev-flow-sample-ui/build'
     into './dev-flow-sample-web/src/main/resources/static'
@@ -121,14 +129,14 @@ task decomposeLayers() {
     dependsOn 'unzip'
 }
 
-task buildDockerImage(type:Exec) {
+task buildDockerImage(type: Exec) {
     dependsOn 'decomposeLayers'
-    commandLine 'docker','build', '-t', 'vitech-team/pet_project:ci', '.'
+    commandLine 'docker', 'build', '-t', 'vitech-team/pet_project:ci', '.'
 }
 
 bootJar {
     baseName = 'dev-flow-sample'
-    version =  '0.1.0'
+    version = '0.1.0'
 }
 
 repositories {

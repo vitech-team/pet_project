@@ -6,23 +6,23 @@ import org.junit.Test;
 
 public class NameServiceTest {
 
-    private NameService nameService;
+  private NameService nameService;
 
-    @Before
-    public void setUp() {
-        nameService = new NameService();
-    }
+  @Before
+  public void setUp() {
+    nameService = new NameService();
+  }
 
-    @Test
-    public void testExtractFirstName() {
-        String firstName = nameService.extractFirstName("Andrii Zaiats");
-        Assert.assertEquals("First name", "Andrii", firstName);
-    }
+  @Test
+  public void testExtractFirstName() {
+    String firstName = nameService.extractFirstName("Andrii Zaiats");
+    Assert.assertEquals("First name", "Andrii", firstName);
+  }
 
-    @Test
-    public void testExtractFirstNameFromNull() {
-        String firstName = nameService.extractFirstName(null);
-        Assert.assertEquals("First name from null", "", firstName);
-    }
+  @Test
+  public void testExtractFirstNameFromNull() {
+    String firstName = nameService.extractFirstName(null);
+    Assert.assertEquals("First name from null", "", firstName);
+  }
 }
 
