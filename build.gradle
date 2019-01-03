@@ -27,6 +27,7 @@ checkstyle {
     checkstyleMain.include '**/*.java'
     checkstyleMain.exclude('**/node_modules/**')
 }
+
 sonarqube {
     properties {
         property "sonar.projectKey", "$sonarProjectKey"
