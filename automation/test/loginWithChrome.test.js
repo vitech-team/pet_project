@@ -9,8 +9,8 @@ async function loginIntoApplication() {
     try {
         await browser.get(applicationUrl);
         await browser.wait(until.elementLocated(By.name('username')));
-        await browser.findElement(By.name("username")).sendKeys("vladyslav.raikovskyi");
-        await browser.findElement(By.name("password")).sendKeys("banan888XD@");
+        await browser.findElement(By.name("username")).sendKeys("ui.test.run");
+        await browser.findElement(By.name("password")).sendKeys("Qwerty1@");
         await browser.findElement(By.name("signInSubmitButton")).submit();
         let helloWorldText = await browser.findElement(By.tagName("h1")).getText();
         return helloWorldText;
@@ -19,8 +19,8 @@ async function loginIntoApplication() {
     }
 }
 
-describe("login into cognito", async () => {
-    it('should login into cognito ', async () => {
+describe("login into cognito with Chrome", async () => {
+    it('should login into cognito with Chrome', async () => {
         const result =await loginIntoApplication();
         assert.equal(result, "Hello world");
 
