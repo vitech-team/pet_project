@@ -1,11 +1,18 @@
 language: java
 jdk: oraclejdk8
 
+branches:
+  only:
+  - master
 
 before_script:
 - chmod +x ./gradlew
 
 build:
+  cache: true
+  cache_dir_list:
+  - $HOME/.gradle/
+  - $SHIPPABLE_BUILD_DIR/dev-flow-sample-ui/node_modules/
 
   pre_ci_boot:
     image_name: vitechpetproject/ci
