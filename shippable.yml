@@ -5,6 +5,7 @@ branches:
   only:
   - master
 
+
 resources:
 # AWS integration needed by Terraform
 - name: aws_keys
