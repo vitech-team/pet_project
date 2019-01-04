@@ -57,7 +57,8 @@ build:
     pull: true
 
   ci:
-  - ./gradlew clean build jacocoRootReport sonarqube buildDockerImage -Dsonar.pullrequest.base=$PULL_REQUEST_BASE_BRANCH  -Dsonar.pullrequest.branch=$HEAD_BRANCH -Dsonar.pullrequest.key=$TRAVIS_PULL_REQUEST
+  - if [ $IS_PULL_REQUEST ]; then ./gradlew clean build jacocoRootReport sonarqube buildDockerImage -Dsonar.pullrequest.base=$PULL_REQUEST_BASE_BRANCH  -Dsonar.pullrequest.branch=$HEAD_BRANCH -Dsonar.pullrequest.key=$TRAVIS_PULL_REQUEST; fi
+  - if [ "$BRANCH" == "master" ]; then ./gradlew clean build jacocoRootReport sonarqube buildDockerImage -Dsonar.branch.name=$BRANCH; fi
   - docker tag vitech-team/pet_project:ci vitechpetproject/pet_project:$COMMIT
   - docker push vitechpetproject/pet_project:$COMMIT
   - shipctl post_resource_state docker_image versionName $COMMIT
