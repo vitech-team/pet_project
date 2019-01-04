@@ -15,6 +15,9 @@ public class RestTest {
 
   private RestApi restApi;
 
+  /**
+   * sets fake base url.
+   */
   @Before
   public void setUp() {
     baseUrl = System.getenv("IT_BASE_URL");
