@@ -1,12 +1,13 @@
 package ua.com.vitech.internal.sample.devflow.it;
 
+import java.io.IOException;
+
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import retrofit2.Retrofit;
 import retrofit2.converter.scalars.ScalarsConverterFactory;
 
-import java.io.IOException;
 
 public class RestTest {
 
@@ -14,14 +15,17 @@ public class RestTest {
 
     private RestApi restApi;
 
+    /**
+     * sets fake base url.
+     */
     @Before
     public void setUp() {
         baseUrl = System.getenv("IT_BASE_URL");
         baseUrl = "http://localhost:8080";
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(baseUrl)
-                .addConverterFactory(ScalarsConverterFactory.create())
-                .build();
+            .baseUrl(baseUrl)
+            .addConverterFactory(ScalarsConverterFactory.create())
+            .build();
         restApi = retrofit.create(RestApi.class);
     }
 
