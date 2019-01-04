@@ -17,7 +17,6 @@ public class RestTest {
     @Before
     public void setUp() {
         baseUrl = System.getenv("IT_BASE_URL");
-        baseUrl = "http://localhost:8080";
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(baseUrl)
                 .addConverterFactory(ScalarsConverterFactory.create())

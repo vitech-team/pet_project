@@ -37,13 +37,18 @@ build:
   - terraform init
   - terraform apply -auto-approve -var-file=terraform.tfvars
   - shipctl copy_file_to_resource_state $SHIPPABLE_BUILD_DIR/terraform/terraform.tfstate aws_ecs_tf_state
+  - shipctl put_resource_state_multi alb_name "alb_name=$(terraform output alb_hostname)"
   - cat $SHIPPABLE_BUILD_DIR/terraform/terraform.tfstate
   - popd
+  # while image is started
+  - sleep 60
+
+  # rest tests
+  - export IT_BASE_URL="http://${ALB_NAME}"
+  - ./gradlew :it:integrationTest
 
   always:
   - cd $SHIPPABLE_BUILD_DIR
-  # while image is started (move to other place)
-  - sleep 60
 
   # terraform de-provisioning
   - pushd $SHIPPABLE_BUILD_DIR/terraform
