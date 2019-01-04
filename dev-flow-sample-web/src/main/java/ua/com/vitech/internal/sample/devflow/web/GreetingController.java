@@ -8,14 +8,14 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class GreetingController {
-  @RequestMapping("/greeting")
-  public String greeting(Principal principal) {
-    return "Hello " + principal.getName();
-  }
+    @RequestMapping("/greeting")
+    public String greeting(Principal principal) {
+        return "Hello " + principal.getName();
+    }
 
-  @RequestMapping("/public")
-  public String publicPage() {
-    return "public page";
-  }
+    @RequestMapping("/public")
+    public String publicPage() {
+        return "public page";
+    }
 
 }

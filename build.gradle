@@ -22,7 +22,7 @@ apply plugin: "checkstyle"
 
 checkstyle {
     toolVersion = "$checkstyleVersion"
-    config = rootProject.resources.text.fromFile('config/checkstyle/google_checks.xml')
+    config = rootProject.resources.text.fromFile('config/checkstyle/dev-flow-sample-rules.xml')
     checkstyleMain.source = './'
     checkstyleMain.include '**/*.java'
     checkstyleMain.exclude('**/node_modules/**')

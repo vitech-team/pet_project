@@ -10,13 +10,13 @@ import org.mockito.runners.MockitoJUnitRunner;
 @RunWith(MockitoJUnitRunner.class)
 public class LoginControllerTest {
 
-  @Mock
-  private HttpServletResponse response;
+    @Mock
+    private HttpServletResponse response;
 
-  @Test
-  public void testLogin() throws Exception {
-    final String redirectUrl = "http://myurl";
-    new LoginController(redirectUrl).login(response);
-    Mockito.verify(response).sendRedirect(redirectUrl);
-  }
+    @Test
+    public void testLogin() throws Exception {
+        final String redirectUrl = "http://myurl";
+        new LoginController(redirectUrl).login(response);
+        Mockito.verify(response).sendRedirect(redirectUrl);
+    }
 }
