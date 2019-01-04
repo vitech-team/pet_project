@@ -58,3 +58,22 @@ build:
   - cp -r $SHIPPABLE_BUILD_DIR/build/target shippable/codecoverage
   - cp -r $SHIPPABLE_BUILD_DIR/dev-flow-sample-ui/coverage/cobertura-coverage.xml shippable/codecoverage
   - cp -r $SHIPPABLE_BUILD_DIR/dev-flow-sample-ui/coverage/junit.xml shippable/testresults
+
+integrations:
+  hub:
+  - integrationName: DockerHub
+    type: dockerRegistryLogin
+
+  notifications:
+  - integrationName: Slack
+    type: slack
+    recipients:
+      - "#elligo-tech-space"
+    branches:
+        only:
+          - master
+    on_success: always
+    on_failure: never
+    on_cancel: never
+    on_start: never
+    on_pull_request: always
