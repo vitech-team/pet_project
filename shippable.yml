@@ -37,14 +37,18 @@ build:
   - terraform init
   - terraform apply -auto-approve -var-file=terraform.tfvars
   - shipctl copy_file_to_resource_state $SHIPPABLE_BUILD_DIR/terraform/terraform.tfstate aws_ecs_tf_state
-  - shipctl put_resource_state_multi alb_name "alb_name=$(terraform output alb_hostname)"
+  - export EOD_HOST=$(terraform output alb_hostname)
+  - echo $EOD_HOST
+  - shipctl put_resource_state_multi alb_name "alb_name=$EOD_HOST"
   - cat $SHIPPABLE_BUILD_DIR/terraform/terraform.tfstate
   - popd
   # while image is started
   - sleep 60
 
   # rest tests
-  - export IT_BASE_URL="http://${ALB_NAME}"
+  # - export EOD_HOST=$(shipctl get_params_resource "alb_name" "alb_name")
+  - export IT_BASE_URL="http://$EOD_HOST"
+  - echo $IT_BASE_URL
   - ./gradlew :it:integrationTest
 
   always:
@@ -56,10 +60,10 @@ build:
   - popd
   - shipctl copy_file_to_resource_state $SHIPPABLE_BUILD_DIR/terraform/terraform.tfstate aws_ecs_tf_state
   - cat $SHIPPABLE_BUILD_DIR/terraform/terraform.tfstate
-  - shipctl put_resource_state_multi alb_name "alb_name=$(terraform output alb_hostname)"
 
   # for test coverage analysis
   - cp -r $SHIPPABLE_BUILD_DIR/**/build/test-results/test/* shippable/testresults
+  - cp -r $SHIPPABLE_BUILD_DIR/**/build/test-results/integrationTest/* shippable/testresults
   - cp -r $SHIPPABLE_BUILD_DIR/build/target shippable/codecoverage
   - cp -r $SHIPPABLE_BUILD_DIR/dev-flow-sample-ui/coverage/cobertura-coverage.xml shippable/codecoverage
   - cp -r $SHIPPABLE_BUILD_DIR/dev-flow-sample-ui/coverage/junit.xml shippable/testresults
