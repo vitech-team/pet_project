@@ -47,7 +47,8 @@ build:
 
   ci:
   # project build
-  - ./gradlew clean build jacocoRootReport sonarqube buildDockerImage -Dsonar.pullrequest.base=$PULL_REQUEST_BASE_BRANCH  -Dsonar.pullrequest.branch=$HEAD_BRANCH -Dsonar.pullrequest.key=$TRAVIS_PULL_REQUEST
+  - if [ "$IS_PULL_REQUEST" == true ]; then ./gradlew clean build jacocoRootReport sonarqube buildDockerImage -Dsonar.pullrequest.base=$PULL_REQUEST_BASE_BRANCH  -Dsonar.pullrequest.branch=$HEAD_BRANCH -Dsonar.pullrequest.key=$TRAVIS_PULL_REQUEST; fi
+  - if [ "$BRANCH" == "master" ]; then ./gradlew clean build jacocoRootReport sonarqube buildDockerImage -Dsonar.branch.name=$BRANCH; fi
 
   # push image to DockerHub
   - docker tag vitech-team/pet_project:ci vitechpetproject/pet_project:$COMMIT
@@ -95,6 +96,14 @@ integrations:
     type: slack
     recipients:
       - "#elligo-tech-space"
+    branches:
+        only:
+          - master
+    on_success: always
+    on_failure: never
+    on_cancel: never
+    on_start: never
+    on_pull_request: never
 
 jobs:
   - name: pet_project_runCI
