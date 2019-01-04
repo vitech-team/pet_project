@@ -26,7 +26,7 @@ checkstyle {
     checkstyleMain.source = './'
     checkstyleMain.include '**/*.java'
     checkstyleMain.exclude('**/node_modules/**')
-    checkstyleTest = false
+    ignoreFailures  = false
 }
 
 sonarqube {

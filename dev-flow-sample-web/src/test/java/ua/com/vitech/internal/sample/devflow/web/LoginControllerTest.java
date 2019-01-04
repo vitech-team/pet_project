@@ -15,8 +15,8 @@ public class LoginControllerTest {
 
   @Test
   public void testLogin() throws Exception {
-    final String REDIRECT_URL = "http://myurl";
-    new LoginController(REDIRECT_URL).login(response);
-    Mockito.verify(response).sendRedirect(REDIRECT_URL);
+    final String redirectUrl = "http://myurl";
+    new LoginController(redirectUrl).login(response);
+    Mockito.verify(response).sendRedirect(redirectUrl);
   }
 }

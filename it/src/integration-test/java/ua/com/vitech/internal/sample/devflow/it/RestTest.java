@@ -1,11 +1,13 @@
 package ua.com.vitech.internal.sample.devflow.it;
 
 import java.io.IOException;
+
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import retrofit2.Retrofit;
 import retrofit2.converter.scalars.ScalarsConverterFactory;
+
 
 public class RestTest {
 
