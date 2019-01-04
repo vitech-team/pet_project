@@ -1,13 +1,12 @@
 const {By, Builder,Key, until} = require('selenium-webdriver');
 const assert = require('assert');
-
-const applicationUrl = "http://localhost:8080";
+const config = require("../config/config").get(process.env.NODE_ENV);
 
 
 async function loginIntoApplication() {
     let browser = await new Builder().forBrowser('chrome').build();
     try {
-        await browser.get(applicationUrl);
+        await browser.get(config.base_uri);
         await browser.wait(until.elementLocated(By.name('username')));
         await browser.findElement(By.name("username")).sendKeys("ui.test.run");
         await browser.findElement(By.name("password")).sendKeys("Qwerty1@");

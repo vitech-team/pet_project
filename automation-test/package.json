@@ -4,8 +4,9 @@
   "description": "",
   "main": "test.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "s-test": "mocha $(find test -name '*.js') --timeout 100000 test"
+    "test": "mocha $(find test -name '*.js') --timeout 100000 test",
+    "test:production": "NODE_ENV=’production’ mocha $(find test -name '*.js') --timeout 100000 test",
+    "test:development": "NODE_ENV=’development’ mocha $(find test -name '*.js') --timeout 100000 test"
   },
   "author": "",
   "license": "ISC",

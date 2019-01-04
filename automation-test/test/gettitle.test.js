@@ -1,14 +1,15 @@
 const {By, Builder,Key, until} = require('selenium-webdriver');
 const assert = require('assert');
 
-const applicationUrl = "http://localhost:8080";
+const config = require("../config/config").get(process.env.NODE_ENV);
+
 
 
 
 async function getTitle() {
     let browser = await new Builder().forBrowser('chrome').build();
     try {
-        await browser.get(applicationUrl);
+        await browser.get(config.base_uri);
         return browser.getTitle();
     }
     finally {
