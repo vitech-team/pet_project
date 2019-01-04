@@ -12,6 +12,7 @@ repositories {
 }
 
 dependencies {
+    compile project(':dev-flow-sample-core')
     compile("org.springframework:spring-web:$springWebVersion")
     compile("org.springframework.boot:spring-boot-starter-security:$springBootStarterVersion")
     compile("javax.servlet:javax.servlet-api:$servletApiVersion")
