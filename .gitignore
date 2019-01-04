@@ -6,3 +6,4 @@
 /**/out
 /dev-flow-sample-web/src/main/resources/static
 /**/target
+/dev-flow-sample-ui/package-lock.json

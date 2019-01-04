@@ -1,28 +1,79 @@
 language: java
 jdk: oraclejdk8
 
+branches:
+  only:
+  - master
 
 before_script:
-- chmod +x ./gradlew
+  - chmod +x ./gradlew
 
 build:
+  cache: true
+  cache_dir_list:
+  - $HOME/.gradle/
+  - $SHIPPABLE_BUILD_DIR/dev-flow-sample-ui/node_modules/
 
   pre_ci_boot:
     image_name: vitechpetproject/ci
-    image_tag: 0.1.4
+    image_tag: ubuntu.18.04-gradle.5-openjdk.8-npm.6.4.1-nodejs.8.10.0-terraform.0.11.10-build.2
     pull: true
 
   ci:
-  - ./gradlew clean build jacocoRootReport sonarqube buildDockerImage -Dsonar.branch.name=$BRANCH
+  # project build
+  - if [ "$IS_PULL_REQUEST" == true ]; then ./gradlew clean build jacocoRootReport sonarqube buildDockerImage -Dsonar.pullrequest.base=$PULL_REQUEST_BASE_BRANCH  -Dsonar.pullrequest.branch=$HEAD_BRANCH -Dsonar.pullrequest.key=$TRAVIS_PULL_REQUEST; else ./gradlew clean build jacocoRootReport sonarqube buildDockerImage -Dsonar.branch.name=$BRANCH; fi
+
+  # push image to DockerHub
+  - docker tag vitech-team/pet_project:ci vitechpetproject/pet_project:$COMMIT
+  - docker push vitechpetproject/pet_project:$COMMIT
+  # modify output image resource
+  - shipctl post_resource_state docker_image versionName $COMMIT
+
+  # terraform provisioning
+  - export AWS_ACCESS_KEY=$(shipctl get_integration_resource_field aws_keys "accessKey")
+  - export AWS_SECRET_KEY=$(shipctl get_integration_resource_field aws_keys "secretKey")
+  - pushd $SHIPPABLE_BUILD_DIR/terraform
+  - shipctl replace terraform.tfvars
+  - terraform init
+  - terraform apply -auto-approve -var-file=terraform.tfvars
+  - shipctl copy_file_to_resource_state $SHIPPABLE_BUILD_DIR/terraform/terraform.tfstate aws_ecs_tf_state
+  - cat $SHIPPABLE_BUILD_DIR/terraform/terraform.tfstate
+  - popd
 
   always:
-  - cp -r ./**/build/test-results/test/* shippable/testresults
-  - cp -r ./build/target shippable/codecoverage
-  - cp -r ./dev-flow-sample-ui/coverage/cobertura-coverage.xml shippable/codecoverage
-  - cp -r ./dev-flow-sample-ui/coverage/junit.xml shippable/testresults
+  - cd $SHIPPABLE_BUILD_DIR
+  # while image is started (move to other place)
+  - sleep 60
 
+  # terraform de-provisioning
+  - pushd $SHIPPABLE_BUILD_DIR/terraform
+  - terraform destroy -force -auto-approve -var-file=terraform.tfvars
+  - popd
+  - shipctl copy_file_to_resource_state $SHIPPABLE_BUILD_DIR/terraform/terraform.tfstate aws_ecs_tf_state
+  - cat $SHIPPABLE_BUILD_DIR/terraform/terraform.tfstate
+  - shipctl put_resource_state_multi alb_name "alb_name=$(terraform output alb_hostname)"
+
+  # for test coverage analysis
+  - cp -r $SHIPPABLE_BUILD_DIR/**/build/test-results/test/* shippable/testresults
+  - cp -r $SHIPPABLE_BUILD_DIR/build/target shippable/codecoverage
+  - cp -r $SHIPPABLE_BUILD_DIR/dev-flow-sample-ui/coverage/cobertura-coverage.xml shippable/codecoverage
+  - cp -r $SHIPPABLE_BUILD_DIR/dev-flow-sample-ui/coverage/junit.xml shippable/testresults
 
 integrations:
   hub:
   - integrationName: DockerHub
     type: dockerRegistryLogin
+
+  notifications:
+  - integrationName: Slack
+    type: slack
+    recipients:
+      - "#elligo-tech-space"
+    branches:
+        only:
+          - master
+    on_success: always
+    on_failure: never
+    on_cancel: never
+    on_start: never
+    on_pull_request: always
