@@ -5,8 +5,45 @@ branches:
   only:
   - master
 
+resources:
+# Terraform files repo
+- name: pet_project_terraform
+  type: gitRepo
+  integration: "github"
+  versionTemplate:
+    sourceName: "vitech-team/pet_project_terraform"
+    branch: master
+# AWS integration needed by Terraform
+- name: aws_keys
+  type: integration
+  integration: "aws"
+# Cognito integration needed for OAuth
+- name: cognito
+  type: integration
+  integration: "Cognito"
+# State resource to store Terraform State
+- name: aws_ecs_tf_state
+  type: state
+# Load balacer info output
+- name: alb_name
+  type: params
+  versionTemplate:
+    params:
+      SEED: "initial_version"
+    #type: loadBalancer
+    #integration: "aws"
+    #pointer:
+    #sourceName : "tbd" #name of the alb
+- name: docker_image
+  type: image
+  integration: DockerHub
+  versionTemplate:
+    sourceName: vitechpetproject/pet_project
+    versionName: "initial"
+
+
 before_script:
-- chmod +x ./gradlew
+  - chmod +x ./gradlew
 
 build:
   cache: true
@@ -21,6 +58,9 @@ build:
 
   ci:
   - ./gradlew clean build jacocoRootReport sonarqube buildDockerImage -Dsonar.pullrequest.base=$PULL_REQUEST_BASE_BRANCH  -Dsonar.pullrequest.branch=$HEAD_BRANCH -Dsonar.pullrequest.key=$TRAVIS_PULL_REQUEST
+  - docker tag vitech-team/pet_project:ci vitechpetproject/pet_project:$COMMIT
+  - docker push vitechpetproject/pet_project:$COMMIT
+  - shipctl post_resource_state docker_image versionName $COMMIT
 
   always:
   - cp -r ./**/build/test-results/test/* shippable/testresults
@@ -35,7 +75,7 @@ integrations:
     type: dockerRegistryLogin
 
   notifications:
-  - integrationName: Slack   
+  - integrationName: Slack
     type: slack
     recipients:
       - "#elligo-tech-space"
@@ -47,3 +87,75 @@ integrations:
     on_cancel: never
     on_start: never
     on_pull_request: never
+
+jobs:
+  - name: pet_project_runCI
+    type: runCI
+    steps:
+    - OUT: docker_image
+# Provision Cluster
+  - name: prov_aws_pet_project_ecs
+    type: runSh
+    steps:
+      - IN: docker_image
+      - IN: pet_project_terraform
+      - IN: aws_keys
+      - IN: cognito
+        switch: off
+      - IN: aws_ecs_tf_state
+        switch: off
+      - TASK:
+          name: prov_cluster
+          runtime:
+          script:
+            - export AWS_ACCESS_KEY=$(shipctl get_integration_resource_field aws_keys "accessKey")
+            - export AWS_SECRET_KEY=$(shipctl get_integration_resource_field aws_keys "secretKey")
+            - pushd $(shipctl get_resource_state "pet_project_terraform")
+            - shipctl replace terraform.tfvars
+            - shipctl copy_file_from_resource_state aws_ecs_tf_state terraform.tfstate .
+            - terraform init
+            - terraform apply -auto-approve -var-file=terraform.tfvars
+      - OUT: alb_name
+        overwrite: true
+      - OUT: aws_ecs_tf_state
+    on_success:
+      script:
+      - cat terraform.tfstate
+      - shipctl put_resource_state_multi alb_name "alb_name=$(terraform output alb_hostname)"
+    always:
+      script:
+        - shipctl copy_file_to_resource_state terraform.tfstate aws_ecs_tf_state
+
+# Deprovision Cluster
+  - name: deprov_aws_pet_project_ecs
+    type: runSh
+    steps:
+      - IN: prov_aws_pet_project_ecs
+      - IN: pet_project_terraform
+        switch: off
+      - IN: aws_keys
+        switch: off
+      - IN: aws_ecs_tf_state
+        switch: off
+      - TASK:
+          name: prov_cluster
+          runtime:
+          script:
+            - sleep 60
+            - export AWS_ACCESS_KEY=$(shipctl get_integration_resource_field aws_keys "accessKey")
+            - export AWS_SECRET_KEY=$(shipctl get_integration_resource_field aws_keys "secretKey")
+            - pushd $(shipctl get_resource_state "pet_project_terraform")
+            - shipctl replace terraform.tfvars
+            - shipctl copy_file_from_resource_state aws_ecs_tf_state terraform.tfstate .
+            - cat terraform.tfstate
+            - terraform init
+            - terraform destroy -force -auto-approve -var-file=terraform.tfvars
+      - OUT: alb_name
+        overwrite: true
+      - OUT: aws_ecs_tf_state
+    on_success:
+      script:
+        - shipctl put_resource_state_multi alb_name "alb_name=$(terraform output alb_hostname)"
+    always:
+      script:
+        - shipctl copy_file_to_resource_state terraform.tfstate aws_ecs_tf_state
