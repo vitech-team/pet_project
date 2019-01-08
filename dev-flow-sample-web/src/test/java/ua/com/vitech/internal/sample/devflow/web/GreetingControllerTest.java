@@ -1,9 +1,8 @@
 package ua.com.vitech.internal.sample.devflow.web;
 
+import java.security.Principal;
 import org.junit.Assert;
 import org.junit.Test;
-
-import java.security.Principal;
 
 public class GreetingControllerTest {
 

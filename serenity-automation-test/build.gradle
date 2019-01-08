@@ -3,9 +3,6 @@ buildscript {
         mavenLocal()
         jcenter()
     }
-    dependencies {
-        classpath("net.serenity-bdd:serenity-gradle-plugin:2.0.10")
-    }
 }
 
 group 'ua.com.vitech.internal'
@@ -21,12 +18,35 @@ repositories {
 apply plugin: 'java'
 apply plugin: 'eclipse'
 apply plugin: 'idea'
-apply plugin: 'net.serenity-bdd.aggregator'
+
+sourceSets {
+    automationTest {
+        java {
+            compileClasspath += main.output + test.output
+            runtimeClasspath += main.output + test.output
+            srcDir file('src/automation-test/java')
+        }
+        resources.srcDir file('src/automation-test/resources')
+    }
+}
+
+
+configurations {
+    automationTestCompile.extendsFrom testCompile
+    automationTestRuntime.extendsFrom testRuntime
+}
+
+
+task automationTest(type: Test) {
+    testClassesDirs = sourceSets.automationTest.output.classesDirs
+    classpath = sourceSets.automationTest.runtimeClasspath
+    outputs.upToDateWhen { false }
+}
 
 dependencies {
-    testCompile 'net.serenity-bdd:serenity-core:2.0.10'
-    testCompile 'net.serenity-bdd:serenity-junit:2.0.10'
-    testCompile('org.assertj:assertj-core:1.7.0')
-    testCompile('org.slf4j:slf4j-simple:1.7.7')
+    automationTestCompile 'net.serenity-bdd:serenity-core:2.0.10'
+    automationTestCompile 'net.serenity-bdd:serenity-junit:2.0.10'
+    automationTestCompile('org.assertj:assertj-core:1.7.0')
+    automationTestCompile('org.slf4j:slf4j-simple:1.7.7')
 }
 gradle.startParameter.continueOnFailure = true

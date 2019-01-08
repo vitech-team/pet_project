@@ -7,12 +7,12 @@ import org.openqa.selenium.support.FindBy;
 
 public class HelloWorldPage extends PageObject {
 
-  @FindBy(tagName = "h1")
-  WebElement h1;
+    @FindBy(tagName = "h1")
+    WebElement h1;
 
-  public HelloWorldPage(WebDriver webDriver){
-    super(webDriver);
-  }
+    HelloWorldPage(WebDriver webDriver) {
+        super(webDriver);
+    }
 
 
 

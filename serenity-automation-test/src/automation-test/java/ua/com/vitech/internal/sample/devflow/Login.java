@@ -3,7 +3,7 @@ package ua.com.vitech.internal.sample.devflow;
 
 public interface Login {
 
-  void typeLoginAndPassword();
+    void typeLoginAndPassword();
 
-  HelloWorldPage pressSubmitButton();
+    HelloWorldPage pressSubmitButton();
 }
