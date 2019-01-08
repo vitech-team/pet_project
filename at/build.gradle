@@ -23,29 +23,6 @@ apply plugin: 'eclipse'
 apply plugin: 'idea'
 apply plugin: 'net.serenity-bdd.aggregator'
 
-
-
-//configurations {
-//    automationTestCompile.extendsFrom testCompile
-//    automationTestRuntime.extendsFrom testRuntime
-//}
-
-
-//task automationTest(type: Test) {
-//    testClassesDirs = sourceSets.automationTest.output.classesDirs
-//    classpath = sourceSets.automationTest.runtimeClasspath
-//    outputs.upToDateWhen { false }
-//}
-
-//test.enabled = false
-//jacocoTestReport.enabled = false
-//aggregate.enabled = false
-//checkOutcomes.enabled = false
-//check.enabled = false
-//jacocoTestCoverageVerification.enabled = false
-
-
-
 test {
     if (project.hasProperty('automation')) {
         include 'ua/com/vitech/internal/sample/devflow/automation/test/**'
@@ -61,4 +38,3 @@ dependencies {
     testCompile('org.assertj:assertj-core:1.7.0')
     testCompile('org.slf4j:slf4j-simple:1.7.7')
 }
-//gradle.startParameter.continueOnFailure = true
