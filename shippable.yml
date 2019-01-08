@@ -50,7 +50,9 @@ build:
   - export IT_BASE_URL="http://$EOD_HOST"
   - echo $IT_BASE_URL
   - ./gradlew :it:integrationTest
-  - ./gradlew :serenity-automation-test:automationTest
+  - ./gradlew :at:test -Pautomation
+  - ./gradlew :at:aggregate
+
 
 
   always:
@@ -66,7 +68,6 @@ build:
   # for test coverage analysis
   - cp -r $SHIPPABLE_BUILD_DIR/**/build/test-results/test/* shippable/testresults
   - cp -r $SHIPPABLE_BUILD_DIR/**/build/test-results/integrationTest/* shippable/testresults
-  - cp -r $SHIPPABLE_BUILD_DIR/**/build/test-results/automationTest/* shippable/testresults
   - cp -r $SHIPPABLE_BUILD_DIR/build/target shippable/codecoverage
   - cp -r $SHIPPABLE_BUILD_DIR/dev-flow-sample-ui/coverage/cobertura-coverage.xml shippable/codecoverage
   - cp -r $SHIPPABLE_BUILD_DIR/dev-flow-sample-ui/coverage/junit.xml shippable/testresults

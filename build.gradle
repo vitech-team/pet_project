@@ -26,8 +26,10 @@ checkstyle {
     checkstyleMain.source = './'
     checkstyleMain.include '**/*.java'
     checkstyleMain.exclude('**/node_modules/**')
+    checkstyleMain.exclude('at/**')
     ignoreFailures = false
 }
+
 
 sonarqube {
     properties {
@@ -69,7 +71,7 @@ task jacocoRootReport(type: org.gradle.testing.jacoco.tasks.JacocoReport) {
     afterEvaluate {
         classDirectories = files(classDirectories.files.collect {
             fileTree(dir: it, exclude:
-                    [
+                    [       
                             '**/it/**',
                             '**/config/**'
                     ])

@@ -1,4 +1,4 @@
-package ua.com.vitech.internal.sample.devflow;
+package ua.com.vitech.internal.sample.devflow.automation.test;
 
 import net.thucydides.core.pages.PageObject;
 import org.openqa.selenium.WebDriver;

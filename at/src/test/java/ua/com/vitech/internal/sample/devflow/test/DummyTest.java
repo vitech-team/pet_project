@@ -1,4 +1,4 @@
-package ua.com.vitech.internal.sample.devflow.automation;
+package ua.com.vitech.internal.sample.devflow.test;
 
 import org.junit.Test;
 

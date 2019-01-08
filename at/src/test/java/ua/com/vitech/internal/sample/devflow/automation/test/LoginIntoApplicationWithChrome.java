@@ -1,4 +1,4 @@
-package ua.com.vitech.internal.sample.devflow;
+package ua.com.vitech.internal.sample.devflow.automation.test;
 
 import static org.junit.Assert.assertEquals;
 
