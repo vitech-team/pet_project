@@ -24,7 +24,7 @@ apply plugin: 'idea'
 apply plugin: 'net.serenity-bdd.aggregator'
 
 test {
-    if (project.hasProperty('automation')) {
+    if (project.hasProperty('runAutomation')) {
         include 'ua/com/vitech/internal/sample/devflow/automation/test/**'
     } else {
         exclude 'ua/com/vitech/internal/sample/devflow/automation/test/**'

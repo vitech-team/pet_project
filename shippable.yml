@@ -16,7 +16,7 @@ build:
 
   pre_ci_boot:
     image_name: vitechpetproject/ci
-    image_tag: ubuntu.18.04-gradle.5-openjdk.8-npm.6.4.1-nodejs.8.10.0-terraform.0.11.10-build.2
+    image_tag: ubuntu.18.04-gradle.5-openjdk.8-npm.6.4.1-nodejs.8.10.0-terraform.0.11.10-build.2-google.chrome.stable.current-chromedriver.2.45
     pull: true
 
   ci:
@@ -50,7 +50,7 @@ build:
   - export IT_BASE_URL="http://$EOD_HOST"
   - echo $IT_BASE_URL
   - ./gradlew :it:integrationTest
-  - ./gradlew :at:test -Pautomation
+  - ./gradlew :at:test -PrunAutomation
   - ./gradlew :at:aggregate
 
 
