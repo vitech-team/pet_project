@@ -9,10 +9,13 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.openqa.selenium.WebDriver;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @RunWith(SerenityRunner.class)
 public class LoginIntoApplicationWithChrome {
 
+    private static final transient Logger LOGGER = LoggerFactory.getLogger(LoginIntoApplicationWithChrome.class);
     private String baseUrl;
 
     @Managed(driver = "chrome")
@@ -24,10 +27,12 @@ public class LoginIntoApplicationWithChrome {
     @Before
     public void setUp() {
         baseUrl = System.getenv("IT_BASE_URL");
+        LOGGER.info("IT Base URL = {}", baseUrl);
     }
 
     @Test
     public void logIn() {
+        System.out.println(baseUrl);
         driver.get(baseUrl);
         Login loginPage = new LoginWithChrome(driver);
         loginPage.typeLoginAndPassword();
