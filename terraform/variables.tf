@@ -30,7 +30,7 @@ variable "ecs_autoscale_role" {
 }
 
 variable "health_check_path" {
-  default = "/"
+  default = "/public"
 }
 
 variable "fargate_cpu" {
