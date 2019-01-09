@@ -21,7 +21,7 @@ build:
 
   ci:
   # project build
-  - if [ "$IS_PULL_REQUEST" == true ]; then ./gradlew clean build jacocoRootReport sonarqube buildDockerImage -Dsonar.pullrequest.base=$PULL_REQUEST_BASE_BRANCH  -Dsonar.pullrequest.branch=$HEAD_BRANCH -Dsonar.pullrequest.key=$TRAVIS_PULL_REQUEST --stacktrace; else ./gradlew clean build jacocoRootReport sonarqube buildDockerImage -Dsonar.branch.name=$BRANCH --stacktrace; fi
+  - if [ "$IS_PULL_REQUEST" == true ]; then ./gradlew clean build jacocoRootReport sonarqube buildDockerImage -Dsonar.pullrequest.base=$PULL_REQUEST_BASE_BRANCH  -Dsonar.pullrequest.branch=$HEAD_BRANCH -Dsonar.pullrequest.key=$TRAVIS_PULL_REQUEST; else ./gradlew clean build jacocoRootReport sonarqube buildDockerImage -Dsonar.branch.name=$BRANCH; fi
 
   # push image to DockerHub
   - docker tag vitech-team/pet_project:ci vitechpetproject/pet_project:$COMMIT
