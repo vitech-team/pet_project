@@ -10,18 +10,13 @@ RUN apt-get install -y locales-all
 RUN wget https://releases.hashicorp.com/terraform/0.11.10/terraform_0.11.10_linux_amd64.zip
 RUN unzip terraform_0.11.10_linux_amd64.zip
 RUN mv terraform /usr/local/bin/
-RUN wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
-RUN apt-get install -y ./google-chrome*.deb
+#RUN wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+#RUN apt-get install -y ./google-chrome*.deb
 
 RUN wget https://chromedriver.storage.googleapis.com/2.45/chromedriver_linux64.zip
 RUN unzip chromedriver_linux64.zip
 RUN cp chromedriver /usr/bin/chromedriver
 RUN cp chromedriver /usr/local/bin
 
-#CMD terraform --version
+CMD terraform --version
 #CMD google-chrome --version
-EXPOSE 9222
-
-# Autorun chrome headless with no GPU
-ENTRYPOINT [ "google-chrome" ]
-CMD [ "--no-sandbox","--headless", "--disable-gpu", "--remote-debugging-address=0.0.0.0", "--remote-debugging-port=9222" ]
