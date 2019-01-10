@@ -14,7 +14,8 @@ RUN wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.d
 RUN apt-get install -y ./google-chrome*.deb
 RUN wget https://chromedriver.storage.googleapis.com/2.45/chromedriver_linux64.zip
 RUN unzip chromedriver_linux64.zip
-RUN mv chromedriver /usr/bin/chromedriver
+RUN mv chromedriver /usr/local/bin
+
 
 CMD terraform --version
 
