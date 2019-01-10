@@ -16,7 +16,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private boolean requireSsl;
 
-    @Value("${security.require-ssl}")
+    @Value("${security.require-ssl:false}")
     public void setRequireSsl(boolean requireSsl) {
         this.requireSsl = requireSsl;
     }
