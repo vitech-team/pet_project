@@ -9,6 +9,8 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -18,7 +20,7 @@ public class LoginIntoApplicationWithChrome {
     private static final transient Logger LOGGER = LoggerFactory.getLogger(LoginIntoApplicationWithChrome.class);
     private String baseUrl;
 
-    @Managed(driver = "chrome")
+    @Managed(driver = "chrome", options = "")
     WebDriver driver;
 
     /**
@@ -28,10 +30,16 @@ public class LoginIntoApplicationWithChrome {
     public void setUp() {
         baseUrl = System.getenv("IT_BASE_URL");
         LOGGER.info("IT Base URL = {}", baseUrl);
+        if(baseUrl == null) {
+            baseUrl = "http://localhost:8080";
+        }
     }
 
     @Test
     public void logIn() {
+        ChromeOptions options = new ChromeOptions();
+        options.addArguments("headless");
+        driver = new ChromeDriver(options);
         driver.get(baseUrl);
         Login loginPage = new LoginWithChrome(driver);
         loginPage.typeLoginAndPassword();
