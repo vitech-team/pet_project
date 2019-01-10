@@ -32,12 +32,10 @@ public class LoginIntoApplicationWithChrome {
 
     @Test
     public void logIn() {
-        System.out.println(baseUrl);
         driver.get(baseUrl);
         Login loginPage = new LoginWithChrome(driver);
         loginPage.typeLoginAndPassword();
         HelloWorldPage helloWorldPage = loginPage.pressSubmitButton();
-        System.out.println(helloWorldPage.h1.getText());
         assertEquals(helloWorldPage.h1.getText(), "Hello world");
     }
 
