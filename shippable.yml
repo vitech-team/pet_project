@@ -49,8 +49,6 @@ build:
   - export IT_BASE_URL="https://pplb.pproject.name"
   - echo $IT_BASE_URL
   - ./gradlew :it:integrationTest
-  # for manual check
-  - sleep 300
 
   always:
   - cd $SHIPPABLE_BUILD_DIR
