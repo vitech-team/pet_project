@@ -46,8 +46,7 @@ build:
   - sleep 60
 
   # rest tests
-  # - export EOD_HOST=$(shipctl get_params_resource "alb_name" "alb_name")
-  - export IT_BASE_URL="http://$EOD_HOST"
+  - export IT_BASE_URL="https://pplb.pproject.name"
   - echo $IT_BASE_URL
   - ./gradlew :it:integrationTest
   - ./gradlew :at:test -PrunAutomation --info
