@@ -54,7 +54,7 @@ build:
   - ./gradlew :it:integrationTest
   - "export DISPLAY=:99.0"
     #run tests
-  - xvfb-run --server-args="-ac" ./gradlew :at:test -PrunAutomation --info
+  - ./gradlew :at:test -PrunAutomation --info
   - ./gradlew :at:aggregate --info
 
 
