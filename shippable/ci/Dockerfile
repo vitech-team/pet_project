@@ -13,10 +13,15 @@ RUN mv terraform /usr/local/bin/
 #RUN wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
 #RUN apt-get install -y ./google-chrome*.deb
 
-RUN wget https://chromedriver.storage.googleapis.com/2.45/chromedriver_linux64.zip
-RUN unzip chromedriver_linux64.zip
-RUN cp chromedriver /usr/bin/chromedriver
-RUN cp chromedriver /usr/local/bin
-
+#RUN wget https://chromedriver.storage.googleapis.com/2.45/chromedriver_linux64.zip
+#RUN unzip chromedriver_linux64.zip
+#RUN cp chromedriver /usr/bin/chromedriver
+#RUN cp chromedriver /usr/local/bin
+COPY install.sh .
+COPY start-chrome.sh .
+RUN chmod 777 install.sh .
+RUN chmod 777 start-chrome.sh .
+RUN ./install.sh
+RUN ./start-chrome.sh
 CMD terraform --version
 #CMD google-chrome --version
