@@ -33,8 +33,12 @@ wget -N http://chromedriver.storage.googleapis.com/$CHROME_DRIVER_VERSION/chrome
 unzip ~/chromedriver_linux64.zip -d ~/
 rm ~/chromedriver_linux64.zip
 sudo mv -f ~/chromedriver /usr/local/bin/chromedriver
+sudo mv -f ~/chromedriver /usr/bin/chromedriver
+
 sudo chown root:root /usr/local/bin/chromedriver
+sudo chown root:root /usr/bin/chromedriver
 sudo chmod 0755 /usr/local/bin/chromedriver
+sudo chmod 0755 /usr/bin/chromedriver
 
 # Install Selenium.
 wget -N http://selenium-release.storage.googleapis.com/$SELENIUM_SUBDIR/selenium-server-standalone-$SELENIUM_STANDALONE_VERSION.jar -P ~/
