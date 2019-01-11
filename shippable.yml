@@ -8,6 +8,9 @@ branches:
 before_script:
   - chmod +x ./gradlew
 
+services:
+  - selenium
+
 build:
   cache: true
   cache_dir_list:
@@ -49,7 +52,9 @@ build:
   - export IT_BASE_URL="https://pplb.pproject.name"
   - echo $IT_BASE_URL
   - ./gradlew :it:integrationTest
-  - ./gradlew :at:test -PrunAutomation --info
+  - "export DISPLAY=:99.0"
+    #run tests
+  - xvfb-run --server-args="-ac" ./gradlew :at:test -PrunAutomation --info
   - ./gradlew :at:aggregate --info
 
 
