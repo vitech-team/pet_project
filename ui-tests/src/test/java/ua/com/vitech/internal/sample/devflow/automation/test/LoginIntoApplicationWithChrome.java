@@ -17,11 +17,12 @@ import org.slf4j.LoggerFactory;
 @RunWith(SerenityRunner.class)
 public class LoginIntoApplicationWithChrome {
 
-    private static final transient Logger LOGGER = LoggerFactory.getLogger(LoginIntoApplicationWithChrome.class);
-    private String baseUrl;
+    private static final transient Logger LOGGER =
+        LoggerFactory.getLogger(LoginIntoApplicationWithChrome.class);
 
     @Managed(driver = "chrome", options = "")
     WebDriver driver;
+    private String baseUrl;
 
     /**
      * sets fake base url.
@@ -30,7 +31,7 @@ public class LoginIntoApplicationWithChrome {
     public void setUp() {
         baseUrl = System.getenv("IT_BASE_URL");
         LOGGER.info("IT Base URL = {}", baseUrl);
-        if(baseUrl == null) {
+        if (baseUrl == null) {
             baseUrl = "http://localhost:8080";
         }
     }
@@ -44,12 +45,12 @@ public class LoginIntoApplicationWithChrome {
         Login loginPage = new LoginWithChrome(driver);
         loginPage.typeLoginAndPassword();
         HelloWorldPage helloWorldPage = loginPage.pressSubmitButton();
-        assertEquals( "Hello world", helloWorldPage.h1.getText());
+        assertEquals("Hello world", helloWorldPage.h1.getText());
     }
 
 
     @After
-    public void closeDriver()  {
+    public void closeDriver() {
         driver.quit();
     }
 
