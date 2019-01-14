@@ -25,6 +25,11 @@ build:
   ci:
   # project build
   - if [ "$IS_PULL_REQUEST" == true ]; then ./gradlew clean build jacocoRootReport sonarqube buildDockerImage -Dsonar.pullrequest.base=$PULL_REQUEST_BASE_BRANCH  -Dsonar.pullrequest.branch=$HEAD_BRANCH -Dsonar.pullrequest.key=$TRAVIS_PULL_REQUEST; else ./gradlew clean build jacocoRootReport sonarqube buildDockerImage -Dsonar.branch.name=$BRANCH; fi
+  # for test coverage analysis
+  - cp -r $SHIPPABLE_BUILD_DIR/**/build/test-results/test/* shippable/testresults
+  - cp -r $SHIPPABLE_BUILD_DIR/build/target shippable/codecoverage
+  - cp -r $SHIPPABLE_BUILD_DIR/dev-flow-sample-ui/coverage/cobertura-coverage.xml shippable/codecoverage
+  - cp -r $SHIPPABLE_BUILD_DIR/dev-flow-sample-ui/coverage/junit.xml shippable/testresults
 
   # push image to DockerHub
   - docker tag vitech-team/pet_project:ci vitechpetproject/pet_project:$COMMIT
@@ -52,6 +57,8 @@ build:
   - export IT_BASE_URL="https://pplb.pproject.name"
   - echo $IT_BASE_URL
   - ./gradlew :it:integrationTest
+  # for test coverage analysis
+  - cp -r $SHIPPABLE_BUILD_DIR/**/build/test-results/integrationTest/* shippable/testresults
   - "export DISPLAY=:99.0"
     #run tests
   - ./gradlew :at:test -PrunAutomation --info
@@ -69,12 +76,6 @@ build:
   - shipctl copy_file_to_resource_state $SHIPPABLE_BUILD_DIR/terraform/terraform.tfstate aws_ecs_tf_state
   - cat $SHIPPABLE_BUILD_DIR/terraform/terraform.tfstate
 
-  # for test coverage analysis
-  - cp -r $SHIPPABLE_BUILD_DIR/**/build/test-results/test/* shippable/testresults
-  - cp -r $SHIPPABLE_BUILD_DIR/**/build/test-results/integrationTest/* shippable/testresults
-  - cp -r $SHIPPABLE_BUILD_DIR/build/target shippable/codecoverage
-  - cp -r $SHIPPABLE_BUILD_DIR/dev-flow-sample-ui/coverage/cobertura-coverage.xml shippable/codecoverage
-  - cp -r $SHIPPABLE_BUILD_DIR/dev-flow-sample-ui/coverage/junit.xml shippable/testresults
 
 integrations:
   hub:
