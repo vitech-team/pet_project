@@ -60,9 +60,8 @@ build:
   # for test coverage analysis
   - cp -r $SHIPPABLE_BUILD_DIR/**/build/test-results/integrationTest/* shippable/testresults
   - "export DISPLAY=:99.0"
-  - export webdriver.chrome.driver=/usr/local/bin/chromedriver
     #run tests
-  - ./gradlew :at:test -PrunAutomation --info
+  - ./gradlew :at:test -PrunAutomation --info -Dwebdriver.chrome.driver=/usr/local/bin/chromedriver
   - ./gradlew :at:aggregate --info
 
 
