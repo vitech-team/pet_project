@@ -61,7 +61,8 @@ build:
   - cp -r $SHIPPABLE_BUILD_DIR/**/build/test-results/integrationTest/* shippable/testresults
   - "export DISPLAY=:99.0"
     #run tests
-  - ./gradlew :at:test -PrunAutomation --info -Dwebdriver.chrome.driver=/usr/local/bin/chromedriver
+  export JAVA_OPTIONS="-Dwebdriver.chrome.driver=/usr/local/bin/chromedriver"
+  - ./gradlew :at:test -PrunAutomation --info
   - ./gradlew :at:aggregate --info
 
 
