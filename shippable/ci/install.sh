@@ -20,7 +20,7 @@ rm /usr/local/bin/selenium-server-standalone.jar
 
 # Install dependencies.
 apt-get update
-apt-get install -y unzip xvfb libxi6 libgconf-2-4
+apt-get install -y unzip openjdk-8-jre-headless xvfb libxi6 libgconf-2-4
 apt-key add gpg
 
 # Install Chrome.
