@@ -7,21 +7,14 @@ RUN apt-get install -y wget
 RUN apt-get install -y unzip
 RUN apt-get install -y gettext-base
 RUN apt-get install -y locales-all
+RUN apt-get install -y curl
 RUN wget https://releases.hashicorp.com/terraform/0.11.10/terraform_0.11.10_linux_amd64.zip
 RUN unzip terraform_0.11.10_linux_amd64.zip
 RUN mv terraform /usr/local/bin/
-#RUN wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
-#RUN apt-get install -y ./google-chrome*.deb
 
-#RUN wget https://chromedriver.storage.googleapis.com/2.45/chromedriver_linux64.zip
-#RUN unzip chromedriver_linux64.zip
-#RUN cp chromedriver /usr/bin/chromedriver
-#RUN cp chromedriver /usr/local/bin
 COPY install.sh .
 COPY start-chrome.sh .
 RUN chmod 777 install.sh .
 RUN chmod 777 start-chrome.sh .
 RUN ./install.sh
 RUN ./start-chrome.sh
-CMD terraform --version
-#CMD google-chrome --version
