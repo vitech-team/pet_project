@@ -14,7 +14,9 @@ RUN mv terraform /usr/local/bin/
 
 COPY install.sh .
 COPY start-chrome.sh .
-RUN chmod 777 install.sh .
-RUN chmod 777 start-chrome.sh .
+RUN chmod +x install.sh .
+RUN chmod +x start-chrome.sh .
 RUN ./install.sh
 RUN ./start-chrome.sh
+COPY google-chrome /opt/google/chrome
+RUN chmod +x /opt/google/chrome/google-chrome
