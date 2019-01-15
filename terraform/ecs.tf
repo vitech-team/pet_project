@@ -17,7 +17,8 @@ data "template_file" "pp_app" {
 
 resource "aws_ecs_task_definition" "app" {
   family                   = "pp-app-task"
-  execution_role_arn       = "${aws_iam_role.ecs_tasks_execution_role.arn}"
+#  execution_role_arn       = "${aws_iam_role.ecs_tasks_execution_role.arn}"
+  execution_role_arn       = "arn:aws:iam::387017034257:role/ecs-task-execution-role"
   network_mode             = "awsvpc"
   requires_compatibilities = ["FARGATE"]
   cpu                      = "${var.fargate_cpu}"

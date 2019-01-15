@@ -4,7 +4,7 @@ resource "aws_appautoscaling_target" "target" {
   scalable_dimension = "ecs:service:DesiredCount"
   role_arn           = "${var.ecs_autoscale_role}"
   min_capacity       = 1
-  max_capacity       = 3
+  max_capacity       = 1
 }
 
 # Automatically scale capacity up by one
