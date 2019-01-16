@@ -26,7 +26,6 @@ checkstyle {
     checkstyleMain.source = './'
     checkstyleMain.include '**/*.java'
     checkstyleMain.exclude('**/node_modules/**')
-    checkstyleMain.exclude('at/**')
     ignoreFailures = false
 }
 
