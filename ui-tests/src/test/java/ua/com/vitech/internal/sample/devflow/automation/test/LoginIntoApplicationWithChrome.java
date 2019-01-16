@@ -17,11 +17,12 @@ import org.slf4j.LoggerFactory;
 @RunWith(SerenityRunner.class)
 public class LoginIntoApplicationWithChrome {
 
-    private static final transient Logger LOGGER = LoggerFactory.getLogger(LoginIntoApplicationWithChrome.class);
-    private String baseUrl;
+    private static final transient Logger LOGGER =
+        LoggerFactory.getLogger(LoginIntoApplicationWithChrome.class);
 
     @Managed(driver = "chrome", options = "")
     WebDriver driver;
+    private String baseUrl;
 
     /**
      * sets fake base url.
@@ -49,7 +50,7 @@ public class LoginIntoApplicationWithChrome {
 
 
     @After
-    public void closeDriver()  {
+    public void closeDriver() {
         driver.quit();
     }
 
