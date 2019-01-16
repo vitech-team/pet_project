@@ -45,7 +45,7 @@ public class LoginIntoApplicationWithChrome {
         Login loginPage = new LoginWithChrome(driver);
         loginPage.typeLoginAndPassword();
         HelloWorldPage helloWorldPage = loginPage.pressSubmitButton();
-        assertEquals("Hello world", helloWorldPage.h1.getText());
+        assertEquals("Hello  world", helloWorldPage.h1.getText());
     }
 
 
