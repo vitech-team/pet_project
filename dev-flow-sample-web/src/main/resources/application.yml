@@ -8,7 +8,7 @@ spring:
             client-name: Pet-proj
             provider: cognito
             scope: openid
-            redirect-uri-template: http://localhost:8080/login/oauth2/code/cognito
+            redirect-uri-template: /login/oauth2/code/cognito
             authorization-grant-type: authorization_code
             redirectUrl: /oauth2/authorization/cognito-client-1
         provider:
