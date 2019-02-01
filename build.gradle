@@ -29,6 +29,7 @@ checkstyle {
     ignoreFailures = false
 }
 
+
 sonarqube {
     properties {
         property "sonar.projectKey", "$sonarProjectKey"
@@ -69,7 +70,7 @@ task jacocoRootReport(type: org.gradle.testing.jacoco.tasks.JacocoReport) {
     afterEvaluate {
         classDirectories = files(classDirectories.files.collect {
             fileTree(dir: it, exclude:
-                    [
+                    [       
                             '**/it/**',
                             '**/config/**'
                     ])
