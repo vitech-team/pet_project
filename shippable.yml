@@ -66,15 +66,15 @@ build:
 
 
 
-  always:
-  - cd $SHIPPABLE_BUILD_DIR
-
-  # terraform de-provisioning
-  - pushd $SHIPPABLE_BUILD_DIR/terraform
-  - terraform destroy -force -auto-approve -var-file=terraform.tfvars
-  - popd
-  - shipctl copy_file_to_resource_state $SHIPPABLE_BUILD_DIR/terraform/terraform.tfstate aws_ecs_tf_state
-  - cat $SHIPPABLE_BUILD_DIR/terraform/terraform.tfstate
+#  always:
+#  - cd $SHIPPABLE_BUILD_DIR
+#
+#  # terraform de-provisioning
+#  - pushd $SHIPPABLE_BUILD_DIR/terraform
+#  - terraform destroy -force -auto-approve -var-file=terraform.tfvars
+#  - popd
+#  - shipctl copy_file_to_resource_state $SHIPPABLE_BUILD_DIR/terraform/terraform.tfstate aws_ecs_tf_state
+#  - cat $SHIPPABLE_BUILD_DIR/terraform/terraform.tfstate
 
 
 integrations:
