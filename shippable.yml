@@ -24,7 +24,7 @@ build:
 
   ci:
   # project build
-  - if [ "$IS_PULL_REQUEST" == true ]; then ./gradlew clean build sonarqube buildDockerImage -Dsonar.pullrequest.base=$PULL_REQUEST_BASE_BRANCH  -Dsonar.pullrequest.branch=$HEAD_BRANCH -Dsonar.pullrequest.key=$TRAVIS_PULL_REQUEST; else ./gradlew clean build jacocoRootReport sonarqube buildDockerImage -Dsonar.branch.name=$BRANCH; fi
+  - if [ "$IS_PULL_REQUEST" == true ]; then ./gradlew clean build sonarqube -Dsonar.pullrequest.base=$PULL_REQUEST_BASE_BRANCH  -Dsonar.pullrequest.branch=$HEAD_BRANCH -Dsonar.pullrequest.key=$TRAVIS_PULL_REQUEST; else ./gradlew clean build jacocoRootReport sonarqube buildDockerImage -Dsonar.branch.name=$BRANCH; fi
 #  # for test coverage analysis
 #  - cp -r $SHIPPABLE_BUILD_DIR/**/build/test-results/test/* shippable/testresults
 #  - cp -r $SHIPPABLE_BUILD_DIR/build/target shippable/codecoverage
@@ -76,6 +76,7 @@ build:
 #  - popd
 #  - shipctl copy_file_to_resource_state $SHIPPABLE_BUILD_DIR/terraform/terraform.tfstate aws_ecs_tf_state
 #  - cat $SHIPPABLE_BUILD_DIR/terraform/terraform.tfstate
+
 
 
 integrations:
