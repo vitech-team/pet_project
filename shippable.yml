@@ -21,10 +21,17 @@ build:
     image_name: vitechpetproject/ci
     image_tag: ubuntu.18.04-gradle.5-openjdk.8-npm.6.4.1-nodejs.8.10.0-terraform.0.11.10-chrome-driver--build.7
     pull: true
+    pre_ci_boot:
+      options: "-v /app:/app"
 
   ci:
   # project build
   - if [ "$IS_PULL_REQUEST" == true ]; then ./gradlew clean build sonarqube -Dsonar.pullrequest.base=$PULL_REQUEST_BASE_BRANCH  -Dsonar.pullrequest.branch=$HEAD_BRANCH -Dsonar.pullrequest.key=$TRAVIS_PULL_REQUEST; else ./gradlew clean build jacocoRootReport sonarqube buildDockerImage -Dsonar.branch.name=$BRANCH; fi
+  - ls
+  - cp -R . /app
+  - docker-compose build
+  - sleep 10
+  - docker-compose down
 #  # for test coverage analysis
 #  - cp -r $SHIPPABLE_BUILD_DIR/**/build/test-results/test/* shippable/testresults
 #  - cp -r $SHIPPABLE_BUILD_DIR/build/target shippable/codecoverage
