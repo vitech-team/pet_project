@@ -18,7 +18,7 @@ build:
 #  - $SHIPPABLE_BUILD_DIR/dev-flow-sample-ui/node_modules/
 
   pre_ci_boot:
-    options: "-v /code:/code"
+    options: "-v /tmp:/tmp"
 #    image_name: vitechpetproject/ci
 #    image_tag: ubuntu.18.04-gradle.5-openjdk.8-npm.6.4.1-nodejs.8.10.0-terraform.0.11.10-chrome-driver--build.7
 #    pull: true
