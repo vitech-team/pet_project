@@ -8,73 +8,83 @@ branches:
 before_script:
   - chmod +x ./gradlew
 
-services:
-  - selenium
+#services:
+#  - selenium
 
 build:
-  cache: true
-  cache_dir_list:
-  - $HOME/.gradle/
-  - $SHIPPABLE_BUILD_DIR/dev-flow-sample-ui/node_modules/
+#  cache: true
+#  cache_dir_list:
+#  - $HOME/.gradle/
+#  - $SHIPPABLE_BUILD_DIR/dev-flow-sample-ui/node_modules/
 
   pre_ci_boot:
-    image_name: vitechpetproject/ci
-    image_tag: ubuntu.18.04-gradle.5-openjdk.8-npm.6.4.1-nodejs.8.10.0-terraform.0.11.10-chrome-driver--build.7
-    pull: true
+    options: "-v /tmp:/tmp"
+#    image_name: vitechpetproject/ci
+#    image_tag: ubuntu.18.04-gradle.5-openjdk.8-npm.6.4.1-nodejs.8.10.0-terraform.0.11.10-chrome-driver--build.7
+#    pull: true
 
   ci:
   # project build
-  - if [ "$IS_PULL_REQUEST" == true ]; then ./gradlew clean build jacocoRootReport sonarqube buildDockerImage -Dsonar.pullrequest.base=$PULL_REQUEST_BASE_BRANCH  -Dsonar.pullrequest.branch=$HEAD_BRANCH -Dsonar.pullrequest.key=$TRAVIS_PULL_REQUEST; else ./gradlew clean build jacocoRootReport sonarqube buildDockerImage -Dsonar.branch.name=$BRANCH; fi
-  # for test coverage analysis
-  - cp -r $SHIPPABLE_BUILD_DIR/**/build/test-results/test/* shippable/testresults
-  - cp -r $SHIPPABLE_BUILD_DIR/build/target shippable/codecoverage
-  - cp -r $SHIPPABLE_BUILD_DIR/dev-flow-sample-ui/coverage/cobertura-coverage.xml shippable/codecoverage
-  - cp -r $SHIPPABLE_BUILD_DIR/dev-flow-sample-ui/coverage/junit.xml shippable/testresults
+#  - if [ "$IS_PULL_REQUEST" == true ]; then ./gradlew clean build sonarqube -Dsonar.pullrequest.base=$PULL_REQUEST_BASE_BRANCH  -Dsonar.pullrequest.branch=$HEAD_BRANCH -Dsonar.pullrequest.key=$TRAVIS_PULL_REQUEST; else ./gradlew clean build jacocoRootReport sonarqube buildDockerImage -Dsonar.branch.name=$BRANCH; fi
+  - ls
+  - cp -R . /tmp
+  - curl -L "https://github.com/docker/compose/releases/download/1.23.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+  - chmod +x /usr/local/bin/docker-compose
+  - docker-compose build
+  - sleep 10
+  - docker-compose down
+#  # for test coverage analysis
+#  - cp -r $SHIPPABLE_BUILD_DIR/**/build/test-results/test/* shippable/testresults
+#  - cp -r $SHIPPABLE_BUILD_DIR/build/target shippable/codecoverage
+#  - cp -r $SHIPPABLE_BUILD_DIR/dev-flow-sample-ui/coverage/cobertura-coverage.xml shippable/codecoverage
+#  - cp -r $SHIPPABLE_BUILD_DIR/dev-flow-sample-ui/coverage/junit.xml shippable/testresults
 
-  # push image to DockerHub
-  - docker tag vitech-team/pet_project:ci vitechpetproject/pet_project:$COMMIT
-  - docker push vitechpetproject/pet_project:$COMMIT
-  # modify output image resource
-  - shipctl post_resource_state docker_image versionName $COMMIT
+#  # push image to DockerHub
+#  - docker tag vitech-team/pet_project:ci vitechpetproject/pet_project:$COMMIT
+#  - docker push vitechpetproject/pet_project:$COMMIT
+#  # modify output image resource
+#  - shipctl post_resource_state docker_image versionName $COMMIT
+#
+#  # terraform provisioning
+#  - export AWS_ACCESS_KEY=$(shipctl get_integration_resource_field aws_keys "accessKey")
+#  - export AWS_SECRET_KEY=$(shipctl get_integration_resource_field aws_keys "secretKey")
+#  - pushd $SHIPPABLE_BUILD_DIR/terraform
+#  - shipctl replace terraform.tfvars
+#  - terraform init
+#  - terraform apply -auto-approve -var-file=terraform.tfvars
+#  - shipctl copy_file_to_resource_state $SHIPPABLE_BUILD_DIR/terraform/terraform.tfstate aws_ecs_tf_state
+#  - export EOD_HOST=$(terraform output alb_hostname)
+#  - echo $EOD_HOST
+#  - shipctl put_resource_state_multi alb_name "alb_name=$EOD_HOST"
+#  - cat $SHIPPABLE_BUILD_DIR/terraform/terraform.tfstate
+#  - popd
+#  # while image is started
+#  - sleep 60
 
-  # terraform provisioning
-  - export AWS_ACCESS_KEY=$(shipctl get_integration_resource_field aws_keys "accessKey")
-  - export AWS_SECRET_KEY=$(shipctl get_integration_resource_field aws_keys "secretKey")
-  - pushd $SHIPPABLE_BUILD_DIR/terraform
-  - shipctl replace terraform.tfvars
-  - terraform init
-  - terraform apply -auto-approve -var-file=terraform.tfvars
-  - shipctl copy_file_to_resource_state $SHIPPABLE_BUILD_DIR/terraform/terraform.tfstate aws_ecs_tf_state
-  - export EOD_HOST=$(terraform output alb_hostname)
-  - echo $EOD_HOST
-  - shipctl put_resource_state_multi alb_name "alb_name=$EOD_HOST"
-  - cat $SHIPPABLE_BUILD_DIR/terraform/terraform.tfstate
-  - popd
-  # while image is started
-  - sleep 60
-
-  # rest tests
-  - export IT_BASE_URL="https://pplb.pproject.name"
-  - echo $IT_BASE_URL
-  - ./gradlew :it:integrationTest
-  # for test coverage analysis
-  - cp -r $SHIPPABLE_BUILD_DIR/**/build/test-results/integrationTest/* shippable/testresults
-  - "export DISPLAY=:99.0"
-    #run tests
-  - ./gradlew :ui-tests:test -PrunAutomation --info
-  - ./gradlew :ui-tests:aggregate --info
+#  # rest tests
+#  - export IT_BASE_URL="https://pplb.pproject.name"
+#  - echo $IT_BASE_URL
+#  - ./gradlew :it:integrationTest
+#  # for test coverage analysis
+#  - cp -r $SHIPPABLE_BUILD_DIR/**/build/test-results/integrationTest/* shippable/testresults
+#  - "export DISPLAY=:99.0"
+#    #run tests
+#  - ./gradlew :ui-tests:test -PrunAutomation --info
+#  - ./gradlew :ui-tests:aggregate --info
 
 
 
-  always:
-  - cd $SHIPPABLE_BUILD_DIR
 
-  # terraform de-provisioning
-  - pushd $SHIPPABLE_BUILD_DIR/terraform
-  - terraform destroy -force -auto-approve -var-file=terraform.tfvars
-  - popd
-  - shipctl copy_file_to_resource_state $SHIPPABLE_BUILD_DIR/terraform/terraform.tfstate aws_ecs_tf_state
-  - cat $SHIPPABLE_BUILD_DIR/terraform/terraform.tfstate
+#  always:
+#  - cd $SHIPPABLE_BUILD_DIR
+#
+#  # terraform de-provisioning
+#  - pushd $SHIPPABLE_BUILD_DIR/terraform
+#  - terraform destroy -force -auto-approve -var-file=terraform.tfvars
+#  - popd
+#  - shipctl copy_file_to_resource_state $SHIPPABLE_BUILD_DIR/terraform/terraform.tfstate aws_ecs_tf_state
+#  - cat $SHIPPABLE_BUILD_DIR/terraform/terraform.tfstate
+
 
 
 integrations:
