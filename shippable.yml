@@ -86,7 +86,6 @@ build:
 #  - cat $SHIPPABLE_BUILD_DIR/terraform/terraform.tfstate
 
 
-
 integrations:
   hub:
   - integrationName: DockerHub
