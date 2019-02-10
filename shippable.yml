@@ -26,6 +26,7 @@ build:
   ci:
   # project build
 #  - if [ "$IS_PULL_REQUEST" == true ]; then ./gradlew clean build sonarqube -Dsonar.pullrequest.base=$PULL_REQUEST_BASE_BRANCH  -Dsonar.pullrequest.branch=$HEAD_BRANCH -Dsonar.pullrequest.key=$TRAVIS_PULL_REQUEST; else ./gradlew clean build jacocoRootReport sonarqube buildDockerImage -Dsonar.branch.name=$BRANCH; fi
+  - ./gradlew clean build
   - ls
   - cp -R . /tmp
   - curl -L "https://github.com/docker/compose/releases/download/1.23.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
