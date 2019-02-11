@@ -65,7 +65,6 @@ build:
   - ./gradlew :ui-tests:aggregate --info
 
 
-
   always:
   - cd $SHIPPABLE_BUILD_DIR
 
